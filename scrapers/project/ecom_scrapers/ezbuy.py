@@ -9,11 +9,6 @@ class EzBuy(Scraper):
         'priceasc': 'XSearchSortPriceUp',
         'pricedesc': 'XSearchSortPriceDown',
     }
-    label_choices = {
-        'relevance': 'Best Match',
-        'priceasc': 'Price Low To High',
-        'pricedesc': 'Price High To Low',
-    }
     limit = 56
 
     def parse(self, params):
