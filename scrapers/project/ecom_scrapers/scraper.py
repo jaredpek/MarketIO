@@ -23,12 +23,14 @@ class Scraper():
 
     def verify(self, params, results):
         '''
-        search = str, mandatory, search keyword\n
-        page = int, optional, page number\n
-        pages = int, optional, page quantity\n
-        sort = str, optional, sort option\n
-        minPrice = float, optional, minimum price\n
-        maxPrice = float, optional, maximum price\n
+        validates all search parameters = {\n
+            search = str, mandatory, search keyword\n
+            page = int, optional, page number\n
+            pages = int, optional, page quantity\n
+            sort = str, optional, sort option\n
+            minPrice = float, optional, minimum price\n
+            maxPrice = float, optional, maximum price\n
+        }\n
         '''
         if not params.get('search'):
             self.set_error('search', 'this is mandatory field', results)
@@ -56,17 +58,27 @@ class Scraper():
 
     def extract(self, url, params):
         '''
-        title = str, product name\n
-        url = str, product page url\n
-        image = str, product image url\n
-        currency = str, currency sold\n
-        price = float, product price\n
-        rating = float, product rating\n
-        rating_qty = int, number of ratings\n
+        returns a list of products = [{\n
+            title = str, product name\n
+            url = str, product page url\n
+            image = str, product image url\n
+            currency = str, currency sold\n
+            price = float, product price\n
+            rating = float, product rating\n
+            rating_qty = int, number of ratings\n
+            platform = str, name of platform\n
+        }]\n
         '''
         pass
 
     def scrape(self, params):
+        '''
+        returns results dictionary = {\n
+            products = list, list of products from the search\n
+            count = int, number of products returned from search\n
+            last_searched = str, url of the last page that was scraped\n
+        }\n
+        '''
         pass
     
     def products(self, params):

@@ -57,11 +57,12 @@ class Qoo10(Scraper):
                 data['currency'] = price[:2]
                 data['price'] = float(price[2:].replace(',', ''))
                 try:
-                    data['rating'] = float(product.find('span', {'class': 'rate_v'}).get('title')[8])
+                    data['rating'] = round(float(product.find('span', {'class': 'rate_v'}).get('title')[8]), 1)
                     data['rating_qty'] = int(product.find('a', {'class': 'lnk_rcm'}).find('strong').text)
                 except Exception:
                     data['rating'] = 0
                     data['rating_qty'] = 0
+                data['platform'] = 'Qoo10'
                 results.append(data)
             except Exception:
                 continue

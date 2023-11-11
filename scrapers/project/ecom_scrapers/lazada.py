@@ -14,8 +14,7 @@ class Lazada(Scraper):
         parsed = {
             'ajax': 'true',
             'catalog_redirect_tag': 'true',
-            'isFirstRequest': 'true',
-            'from': 'input'
+            'from': 'input',
         }
         if params.get('search'):
             parsed['q'] = params['search']
@@ -42,12 +41,13 @@ class Lazada(Scraper):
             try:
                 data = {}
                 data['title'] = product.get('name')
-                data['url'] = product.get('itemURL')[2:]
+                data['url'] = product.get('itemUrl')[2:]
                 data['image'] = product.get('image')
                 data['currency'] = 'S$'
                 data['price'] = float(product.get('price'))
-                data['rating'] = float(product.get('ratingScore') or 0)
-                data['rating_qty'] = float(product.get('review') or 0)
+                data['rating'] = round(float(product.get('ratingScore') or 0), 1)
+                data['rating_qty'] = int(product.get('review') or 0)
+                data['platform'] = 'Lazada'
                 results.append(data)
             except Exception:
                 continue
@@ -60,10 +60,9 @@ class Lazada(Scraper):
         results = {'products': []}
         for i in range(page, page + pages):
             params['page'] = i
-            response = requests.get(f'{self.url}/tag/{params["q"]}', params=params, headers=get_headers(self.url))
+            response = requests.get(f'{self.url}/searchbox', params=params, headers=get_headers(self.url))
             results['products'].extend(self.extract(response))
         
-        results['response'] = response
         results['last_searched'] = response.url
         results['count'] = len(results['products'])
         return results

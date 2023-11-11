@@ -44,11 +44,12 @@ class Amazon(Scraper):
                 try:
                     rating = product.find('span', {'class': 'a-icon-alt'}).text[:-6]
                     rating, rating_qty = rating.split(' out of ')
-                    data['rating'] = float(rating)
+                    data['rating'] = round(float(rating), 1)
                     data['rating_qty'] = float(rating_qty)
                 except Exception:
                     data['rating'] = 0
                     data['rating_qty'] = 0
+                data['platform'] = 'Amazon'
                 results.append(data)
             except Exception:
                 continue
