@@ -5,7 +5,6 @@ from ecom_scrapers.scraper import Scraper
 
 class Amazon(Scraper):
     url = 'https://www.amazon.sg'
-    search_url = f'{url}/s'
     sort_choices = {
         'relevance': 'relevanceblender',
         'priceasc': 'price-asc-rank',
