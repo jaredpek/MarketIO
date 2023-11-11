@@ -28,8 +28,8 @@ class Scraper():
             page = int, optional, page number\n
             pages = int, optional, page quantity\n
             sort = str, optional, sort option\n
-            minPrice = float, optional, minimum price\n
-            maxPrice = float, optional, maximum price\n
+            minPrice = number, optional, minimum price\n
+            maxPrice = number, optional, maximum price\n
         }\n
         '''
         if not params.get('search'):
@@ -73,6 +73,7 @@ class Scraper():
 
     def scrape(self, params):
         '''
+        params = parsed search params\n
         returns results dictionary = {\n
             products = list, list of products from the search\n
             count = int, number of products returned from search\n
@@ -87,6 +88,7 @@ class Scraper():
             return results
         
         parsed = self.parse(params)
+        print(parsed)
         results['data'] = self.scrape(parsed)
         return results
 
