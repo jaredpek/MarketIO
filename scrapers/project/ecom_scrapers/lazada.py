@@ -41,13 +41,13 @@ class Lazada(Scraper):
         for product in products:
             try:
                 data = {}
-                # data['title'] = product.get('name')
-                # data['url'] = product.get('itemURL')[2:]
-                # data['image'] = product.get('image')
-                # data['currency'] = 'S$'
-                # data['price'] = float(product.get('price'))
-                # data['rating'] = float(product.get('ratingScore') or 0)
-                # data['rating_qty'] = float(product.get('review') or 0)
+                data['title'] = product.get('name')
+                data['url'] = product.get('itemURL')[2:]
+                data['image'] = product.get('image')
+                data['currency'] = 'S$'
+                data['price'] = float(product.get('price'))
+                data['rating'] = float(product.get('ratingScore') or 0)
+                data['rating_qty'] = float(product.get('review') or 0)
                 results.append(data)
             except Exception:
                 continue
@@ -63,6 +63,7 @@ class Lazada(Scraper):
             response = requests.get(f'{self.url}/tag/{params["q"]}', params=params, headers=get_headers(self.url))
             results['products'].extend(self.extract(response))
         
+        results['response'] = response
         results['last_searched'] = response.url
         results['count'] = len(results['products'])
         return results

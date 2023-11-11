@@ -22,6 +22,14 @@ class Scraper():
         return True
 
     def verify(self, params, results):
+        '''
+        search = str, mandatory, search keyword\n
+        page = int, optional, page number\n
+        pages = int, optional, page quantity\n
+        sort = str, optional, sort option\n
+        minPrice = float, optional, minimum price\n
+        maxPrice = float, optional, maximum price\n
+        '''
         if not params.get('search'):
             self.set_error('search', 'this is mandatory field', results)
         if params.get('page') and not self.is_positive_int(params['page']):
@@ -47,6 +55,15 @@ class Scraper():
         pass
 
     def extract(self, url, params):
+        '''
+        title = str, product name\n
+        url = str, product page url\n
+        image = str, product image url\n
+        currency = str, currency sold\n
+        price = float, product price\n
+        rating = float, product rating\n
+        rating_qty = int, number of ratings\n
+        '''
         pass
 
     def scrape(self, params):
