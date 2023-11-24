@@ -17,7 +17,7 @@ class Lazada(Scraper):
             'from': 'input',
         }
         if params.get('search'):
-            parsed['q'] = params['search']
+            parsed['q'] = params['search'].replace(' ', '+')
         if params.get('page'):
             parsed['page'] = int(params['page'])
         if params.get('pages'):

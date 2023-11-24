@@ -88,7 +88,6 @@ class Scraper():
             return results
         
         parsed = self.parse(params)
-        print(parsed)
         results['data'] = self.scrape(parsed)
         return results
 

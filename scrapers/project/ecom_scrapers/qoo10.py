@@ -28,7 +28,7 @@ class Qoo10(Scraper):
             'ot': 'Y',
         }
         if params.get('search'):
-            parsed['search_keyword'] = params['search']
+            parsed['search_keyword'] = params['search'].replace(' ', '+')
         if params.get('page'):
             parsed['p'] = int(params['page'])
         if params.get('pages'):
