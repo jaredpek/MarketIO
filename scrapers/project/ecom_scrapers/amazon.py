@@ -14,7 +14,7 @@ class Amazon(Scraper):
     def parse(self, params):
         parsed = {}
         if params.get('search'):
-            parsed['k'] = params['search']
+            parsed['k'] = params['search'].replace(' ', '+')
         if params.get('page'):
             parsed['page'] = int(params['page'])
         if params.get('pages'):

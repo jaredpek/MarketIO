@@ -28,7 +28,7 @@ class EzBuy(Scraper):
             'limit': self.limit
         }
         if params.get('search'):
-            parsed['search']['keyword'] = params['search']
+            parsed['search']['keyword'] = params['search'].replace(' ', '+')
         if params.get('page'):
             parsed['offset'] = (int(params['page']) - 1) * self.limit
         if params.get('pages'):

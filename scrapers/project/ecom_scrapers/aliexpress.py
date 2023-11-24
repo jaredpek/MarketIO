@@ -1,4 +1,4 @@
-import requests
+import requests, json
 from bs4 import BeautifulSoup
 from ecom_scrapers.headers import get_headers
 from ecom_scrapers.scraper import Scraper
@@ -12,9 +12,9 @@ class AliExpress(Scraper):
     }
 
     def parse(self, params):
-        parsed = {'g': 'y'}
+        parsed = {}
         if params.get('search'):
-            parsed['SearchText'] = params['search']
+            parsed['SearchText'] = params['search'].replace(' ', '+')
         if params.get('page'):
             parsed['page'] = int(params['page'])
         if params.get('pages'):
@@ -23,32 +23,36 @@ class AliExpress(Scraper):
             minPrice, maxPrice = params.get('minPrice'), params.get('maxPrice')
             minPrice = float(minPrice) if minPrice else ''
             maxPrice = float(maxPrice) if maxPrice else ''
-            parsed['pr'] += f'{minPrice}-{maxPrice}|'
+            parsed['pr'] = f'{minPrice}-{maxPrice}'
         if params.get('sort'):
             parsed['SortType'] = self.sort_choices[params['sort']]
         return parsed
     
     def extract(self, response):
         soup = BeautifulSoup(response.text, 'html.parser')
-        products = soup.find_all('tr', {'list_type': 'search_new_list_type'})
+        meta_elem = soup.find('meta', {'name': 'aplus-auto-clk'})
+        data_elem = meta_elem.next_element.text
+        start = data_elem.index('itemList')
+        end = data_elem.index('_cost')
+        products = json.loads(data_elem[(start + 10):(end - 3)])['content']
+
         results = []
         for product in products:
             try:
                 data = {}
-                title_section = product.find('a', {'data-type': 'goods_url'})
-                data['title'] = title_section.get('title')
-                data['url'] = title_section.get('href')
-                data['image'] = title_section.find('img').get('gd_src')
-                price = product.find('strong', {'title': 'Discounted Price'}).text
-                data['currency'] = price[:2]
-                data['price'] = float(price[2:].replace(',', ''))
+                data['title'] = product['title']['seoTitle']
+                data['url'] = f'{AliExpress.url}/item/{product["productId"]}.html'
+                data['image'] = f'https:{product["image"]["imgUrl"]}'
+                data['currency'] = product['prices']['currencySymbol'].replace('G', '')
+                price = product['prices'].get('salePrice') or product['prices'].get('originalPrice')
+                data['price'] = float(price['minPrice'])
                 try:
-                    data['rating'] = round(float(product.find('span', {'class': 'rate_v'}).get('title')[8]), 1)
-                    data['rating_qty'] = int(product.find('a', {'class': 'lnk_rcm'}).find('strong').text)
+                    data['rating'] = round(float(product['evaluation']['starRating']), 1)
+                    data['rating_qty'] = int(product['trade']['tradeDesc'].split(' ')[0].split('+')[0])
                 except Exception:
                     data['rating'] = 0
                     data['rating_qty'] = 0
-                data['platform'] = 'Qoo10'
+                data['platform'] = 'AliExpress'
                 results.append(data)
             except Exception:
                 continue
@@ -60,9 +64,14 @@ class AliExpress(Scraper):
 
         results = {'products': []}
         for i in range(page, page + pages):
-            params['p'] = i
-            response = requests.post(f'{self.url}/w/wholesale-{params["search"]}', params=params, headers=get_headers(self.url))
-            results['products'].extend(self.extract(response))
+            params['page'] = i
+            for _ in range(5):
+                try:
+                    response = requests.get(f'{self.url}/w/wholesale-{params["SearchText"]}.html', params=params, headers=get_headers(self.url))
+                    results['products'].extend(self.extract(response))
+                    break
+                except:
+                    continue
         
         results['last_searched'] = response.url
         results['count'] = len(results['products'])
