@@ -17,9 +17,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'ecom_scrapers.apps.EcomScrapersConfig',
+    'scrapers.apps.ScrapersConfig',
     'products.apps.ProductsConfig',
-    'categories.apps.CategoriesConfig',
     'analytics.apps.AnalyticsConfig',
 ]
 

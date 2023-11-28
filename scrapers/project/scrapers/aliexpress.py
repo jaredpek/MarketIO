@@ -1,7 +1,7 @@
 import requests, json
 from bs4 import BeautifulSoup
-from ecom_scrapers.headers import get_headers
-from ecom_scrapers.scraper import Scraper
+from scrapers.headers import get_headers
+from scrapers.scraper import Scraper
 
 class AliExpress(Scraper):
     url = 'https://www.aliexpress.com'
@@ -21,8 +21,8 @@ class AliExpress(Scraper):
             parsed['pages'] = int(params['pages'])
         if params.get('minPrice') or params.get('maxPrice'):
             minPrice, maxPrice = params.get('minPrice'), params.get('maxPrice')
-            minPrice = float(minPrice) if minPrice else ''
-            maxPrice = float(maxPrice) if maxPrice else ''
+            minPrice = int(minPrice) if minPrice else ''
+            maxPrice = int(maxPrice) if maxPrice else ''
             parsed['pr'] = f'{minPrice}-{maxPrice}'
         if params.get('sort'):
             parsed['SortType'] = self.sort_choices[params['sort']]
@@ -44,7 +44,7 @@ class AliExpress(Scraper):
                 data['url'] = f'{AliExpress.url}/item/{product["productId"]}.html'
                 data['image'] = f'https:{product["image"]["imgUrl"]}'
                 data['currency'] = product['prices']['currencySymbol'].replace('G', '')
-                price = product['prices'].get('salePrice') or product['prices'].get('originalPrice')
+                price = product['prices'].get('salePrice')
                 data['price'] = float(price['minPrice'])
                 try:
                     data['rating'] = round(float(product['evaluation']['starRating']), 1)

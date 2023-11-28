@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from ecom_scrapers.headers import get_headers
-from ecom_scrapers.scraper import Scraper
+from scrapers.headers import get_headers
+from scrapers.scraper import Scraper
 
 class Amazon(Scraper):
     url = 'https://www.amazon.sg'

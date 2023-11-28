@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class EcomScrapersConfig(AppConfig):
+class ScrapersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ecom_scrapers'
+    name = 'scrapers'

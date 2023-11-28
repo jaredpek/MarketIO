@@ -1,6 +1,6 @@
 import requests
-from ecom_scrapers.headers import get_headers
-from ecom_scrapers.scraper import Scraper
+from scrapers.headers import get_headers
+from scrapers.scraper import Scraper
 
 class Lazada(Scraper):
     url = 'https://www.lazada.sg'
@@ -24,8 +24,8 @@ class Lazada(Scraper):
             parsed['pages'] = int(params['pages'])
         if params.get('minPrice') or params.get('maxPrice'):
             minPrice, maxPrice = params.get('minPrice'), params.get('maxPrice')
-            minPrice = float(minPrice) if minPrice else ''
-            maxPrice = float(maxPrice) if maxPrice else ''
+            minPrice = int(minPrice) if minPrice else ''
+            maxPrice = int(maxPrice) if maxPrice else ''
             parsed['price'] = f'{minPrice}-{maxPrice}'
         if params.get('sort'):
             parsed['sort'] = self.sort_choices[params['sort']]
@@ -41,7 +41,7 @@ class Lazada(Scraper):
             try:
                 data = {}
                 data['title'] = product.get('name')
-                data['url'] = product.get('itemUrl')[2:]
+                data['url'] = f'https://{product.get("itemUrl")[2:]}'
                 data['image'] = product.get('image')
                 data['currency'] = 'S$'
                 data['price'] = float(product.get('price'))

@@ -11,6 +11,12 @@ class Scraper():
         results['status'] = 'error'
         results['data']['errors'][field] = message
     
+    def set_choice_error(self, field, message, choices, results):
+        message = f'{message}, ' if message else 'choices are '
+        for item in choices:
+            message += f"'{item}', "
+        self.set_error(field, message[:-2], results)
+    
     def is_positive_int(self, value):
         if (isinstance(value, int) or (isinstance(value, str) and value.isdigit())) and int(value) >= 0:
             return True
@@ -39,10 +45,7 @@ class Scraper():
         if params.get('pages') and not self.is_positive_int(params['pages']):
             self.set_error('pages', 'this must be a positive integer', results)
         if params.get('sort') and params['sort'] not in self.sort_choices:
-            message = 'only '
-            for choice in self.sort_choices:
-                message += f'"{choice}", '
-            self.set_error('sort', message[:-2] + ' are allowed', results)
+            self.set_choice_error('sort', '', self.sort_choices, results)
         if params.get('minPrice') and not self.is_positive_int(params['minPrice']):
             self.set_error('minPrice', 'this must be a positive integer', results)
         if params.get('maxPrice') and not self.is_positive_int(params['maxPrice']):
@@ -90,7 +93,3 @@ class Scraper():
         parsed = self.parse(params)
         results['data'] = self.scrape(parsed)
         return results
-
-    def categories(self):
-        pass
-

@@ -1,6 +1,6 @@
 import requests
-from ecom_scrapers.headers import get_headers
-from ecom_scrapers.scraper import Scraper
+from scrapers.headers import get_headers
+from scrapers.scraper import Scraper
 
 class EzBuy(Scraper):
     url = 'https://www.ezbuy.sg'
@@ -47,13 +47,8 @@ class EzBuy(Scraper):
                 'filterId': 'Price',
                 'values': [price_range]
             })
-        if params.get('minPrice'):
-            parsed['search']['filters'][1]['values'][0]['num1'] = int(params['minPrice']) or 0
-        if params.get('maxPrice'):
-            parsed['search']['filters'][1]['values'][0]['num2'] = int(params['maxPrice']) or 0
         if params.get('sort'):
             parsed['search']['filters'][0]['values'][0]['valueId'] = self.sort_choices[params['sort']]
-            parsed['search']['filters'][0]['values'][0]['label'] = self.label_choices[params['sort']]
         return parsed
     
     def extract(self, response):
