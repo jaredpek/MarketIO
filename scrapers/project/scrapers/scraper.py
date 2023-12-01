@@ -1,8 +1,6 @@
-class Scraper():
-    default = {
-        'status': 'success',
-        'data': {}
-    }
+from scrapers.response import Response
+
+class Scraper(Response):
     sort_choices = ['relevance', 'priceasc', 'pricedesc']
 
     def set_error(self, field, message, results):
