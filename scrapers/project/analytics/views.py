@@ -1,31 +1,22 @@
+from analytics.response import Response as AnalyticsResponse
+from products.general import General
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-class Metrics():
-    def __init__(self, products):
-        self.products = products
-        products.sort(key=lambda product: product['price'])
-    
-    def minimum(self):
-        return self.products[0]['price']
-
-    def low_quartile(self):
-        return self.products[len(self.products) * 0.25]['price']
-
-    def mean(self):
-        pass
-
-    def median(self):
-        pass
-
-    def high_quartile(self):
-        return self.products[len(self.products) * 0.75]['price']
-
-    def maximum(self):
-        return self.products[-1]['price']
-
 class Analytics(APIView):
     def get(self, request):
+        params = {
+            'search': request.GET.get('search'),
+            'scrapers': request.GET.get('scrapers'),
+            'pages': 5,
+        }
+        products_response = General().products(params)
+        if products_response['status'] != 'success':
+            return Response(products_response, status.HTTP_400_BAD_REQUEST)
         
-        pass
+        products = products_response['data']['products']
+        analytics_response = AnalyticsResponse().get(products)
+        if analytics_response['status'] != 'success':
+            return Response(analytics_response, status.HTTP_400_BAD_REQUEST)
+        return Response(analytics_response, status.HTTP_200_OK)

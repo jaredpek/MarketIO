@@ -1,19 +1,7 @@
-from scrapers.response import Response
+from project.response import Response
 
 class Scraper(Response):
     sort_choices = ['relevance', 'priceasc', 'pricedesc']
-
-    def set_error(self, field, message, results):
-        if not results['data'].get('errors'):
-            results['data'] = {'errors': {}}
-        results['status'] = 'error'
-        results['data']['errors'][field] = message
-    
-    def set_choice_error(self, field, message, choices, results):
-        message = f'{message}, ' if message else 'choices are '
-        for item in choices:
-            message += f"'{item}', "
-        self.set_error(field, message[:-2], results)
     
     def is_positive_int(self, value):
         if (isinstance(value, int) or (isinstance(value, str) and value.isdigit())) and int(value) >= 0:

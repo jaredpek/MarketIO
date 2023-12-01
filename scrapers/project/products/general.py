@@ -29,7 +29,7 @@ class General(Scraper):
 
     def verify(self, params, results):
         if not self.valid_scrapers(params.get('scrapers')):
-            self.set_choice_error('scrapers', "invalid scrapers selected (seperated by '+')", available.keys(), results)
+            self.set_choice_error('scrapers', "invalid scrapers selected (seperated by ',')", available.keys(), results)
         return super().verify(params, results)
     
     def scrape(self, params):
