@@ -3,6 +3,7 @@ from scrapers.headers import get_headers
 from scrapers.scraper import Scraper
 
 class Lazada(Scraper):
+    key = 'LZDA'
     url = 'https://www.lazada.sg'
     sort_choices = {
         'relevance': 'popularity',
@@ -40,6 +41,7 @@ class Lazada(Scraper):
         for product in products:
             try:
                 data = {}
+                data['id'] = f'{Lazada.key}_{product.get("itemId")}'
                 data['title'] = product.get('name')
                 data['url'] = f'https://{product.get("itemUrl")[2:]}'
                 data['image'] = product.get('image')

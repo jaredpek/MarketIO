@@ -1,5 +1,5 @@
 from analytics.response import Response as AnalyticsResponse
-from products.general import General
+from search.general import General
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response

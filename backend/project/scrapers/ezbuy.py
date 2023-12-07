@@ -3,6 +3,7 @@ from scrapers.headers import get_headers
 from scrapers.scraper import Scraper
 
 class EzBuy(Scraper):
+    key = 'EZBY'
     url = 'https://www.ezbuy.sg'
     sort_choices = {
         'relevance': 'XSearchSortBestMatch',
@@ -58,6 +59,7 @@ class EzBuy(Scraper):
             product = product['product']
             try:
                 data = {}
+                data['id'] = f'{EzBuy.key}_{product.get("gpid")}'
                 data['title'] = product.get('name')
                 data['url'] = f'{self.url}/product/{product.get("gpid")}.html'
                 data['image'] = product.get('img')
