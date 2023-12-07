@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from products.general import General as GeneralScraper
 from scrapers.aliexpress import AliExpress as AliExpressScraper
@@ -10,6 +11,8 @@ from scrapers.lazada import Lazada as LazadaScraper
 from scrapers.qoo10 import Qoo10 as Qoo10Scraper
 
 class ProductView(APIView):
+    permission_classes = [AllowAny]
+    
     def get_products(self, params, scraper):
         return scraper.products(params)
     

@@ -35,13 +35,15 @@ class General(Scraper):
     def scrape(self, params):
         results = {
             'products': [],
-            'last_searched': [],
+            'last_searched': {},
+            'quantity_count': {},
         }
         scrapers = params['scrapers']
         for item in scrapers:
             data = available.get(item)().products(params)
             results['products'].extend(data['data']['products'])
-            results['last_searched'].append(data['data']['last_searched'])
+            results['last_searched'][item] = data['data']['last_searched']
+            results['quantity_count'][item] = data['data']['count']
         
         results['count'] = len(results['products'])
         return results

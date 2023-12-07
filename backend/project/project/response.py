@@ -1,8 +1,17 @@
 class Response():
+    '''
+    default = {\n
+        'status': 'success',\n
+        'data': {}\n
+    }
+    '''
     default = {
         'status': 'success',
         'data': {}
     }
+
+    def set_message(self, field, message, results):
+        results['data'][field] = message
 
     def set_error(self, field, message, results):
         if not results['data'].get('errors'):

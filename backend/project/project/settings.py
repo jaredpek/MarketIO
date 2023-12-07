@@ -6,25 +6,50 @@ SECRET_KEY = 'PYF6LbTtyaRSMNXxYsjZIGgvNCLFjVv71jtPjaXYXhuhlSFJ4j3Wunzfjq9khLlN'
 
 DEBUG = True
 
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
-    'scrapers.apps.ScrapersConfig',
-    'products.apps.ProductsConfig',
+    'rest_framework.authtoken',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
     'analytics.apps.AnalyticsConfig',
+    'products.apps.ProductsConfig',
+    'scrapers.apps.ScrapersConfig',
+    'user_account.apps.UserAccountConfig',
+    'watchlist.apps.WatchlistConfig',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 1000,
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
 MIDDLEWARE = [
@@ -36,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
