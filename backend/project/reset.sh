@@ -20,3 +20,13 @@ rm -r watchlists/__pycache__
 rm -r watchlists/migrations
 
 rm db.sqlite3
+
+python manage.py makemigrations analytics products profiles scrapers search watchlists
+python manage.py migrate
+
+python manage.py createsuperuser
+admin
+admin@admin.com
+admin
+admin
+y

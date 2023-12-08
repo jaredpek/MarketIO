@@ -1,14 +1,16 @@
 from analytics.metrics import Metric
-from project.response import Response as BaseResponse
+from project.response import Response as Result
 
-class Response(BaseResponse):
+class Response():
     def get(self, products):
-        results = self.default.copy()
-        if not products or not len(products):
-            self.set_error('products', 'no products to compute analytics', results)
-            return results
+        result = Result()
+        data = result.result
         
-        results['data']['analytics'] = {}
+        if not products or not len(products):
+            result.set_error('products', result.messages['no_objects'])
+            return data
+        
+        data['data']['analytics'] = {}
         for metric in ['price', 'rating']:
-            results['data']['analytics'][metric] = Metric(products, metric).compute()
-        return results
+            data['data']['analytics'][metric] = Metric(products, metric).compute()
+        return data

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
 
     'analytics.apps.AnalyticsConfig',
+    'products.apps.ProductsConfig',
     'profiles.apps.ProfilesConfig',
     'scrapers.apps.ScrapersConfig',
     'search.apps.SearchConfig',

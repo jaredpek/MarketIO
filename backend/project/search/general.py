@@ -1,5 +1,6 @@
 from random import shuffle
 
+from project.response import Response
 from scrapers.scraper import Scraper
 from scrapers.aliexpress import AliExpress as AliExpressScraper
 from scrapers.amazon import Amazon as AmazonScraper
@@ -27,10 +28,10 @@ class General(Scraper):
         
         return True
 
-    def verify(self, params, results):
+    def verify(self, params, response):
         if not self.valid_scrapers(params.get('scrapers')):
-            self.set_choice_error('scrapers', "invalid scrapers selected (seperated by ',')", available.keys(), results)
-        return super().verify(params, results)
+            response.set_choice_error('scrapers', "invalid scrapers selected (seperated by ',')", available.keys())
+        return super().verify(params, response)
     
     def scrape(self, params):
         results = {
@@ -56,19 +57,20 @@ class General(Scraper):
         return parsed
     
     def products(self, params):
-        results = self.default.copy()
-        if not self.verify(params, results):
-            return results
+        response = Response()
+        result = response.result
+        if not self.verify(params, response):
+            return result
         
         parsed = self.parse(params)
-        results['data'] = self.scrape(parsed)
+        result['data'] = self.scrape(parsed)
 
         if parsed.get('sort') == 'priceasc':
-            results['data']['products'].sort(key=lambda product: product['price'])
-            return results
+            result['data']['products'].sort(key=lambda product: product['price'])
+            return result
         if parsed.get('sort') == 'pricedesc':
-            results['data']['products'].sort(key=lambda product: product['price'], reverse=True)
-            return results
+            result['data']['products'].sort(key=lambda product: product['price'], reverse=True)
+            return result
         
-        shuffle(results['data']['products'])
-        return results
+        shuffle(response.result['data']['products'])
+        return result
