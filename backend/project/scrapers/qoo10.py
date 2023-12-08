@@ -4,6 +4,7 @@ from scrapers.headers import get_headers
 from scrapers.scraper import Scraper
 
 class Qoo10(Scraper):
+    key = 'QTEN'
     url = 'https://www.qoo10.sg'
     sort_choices = {
         'relevance': 'r',
@@ -52,6 +53,7 @@ class Qoo10(Scraper):
                 title_section = product.find('a', {'data-type': 'goods_url'})
                 data['title'] = title_section.get('title')
                 data['url'] = title_section.get('href')
+                data['id'] = f'{Qoo10.key}_{data["url"].split("/")[-1]}'
                 data['image'] = title_section.find('img').get('gd_src')
                 price = product.find('strong', {'title': 'Discounted Price'}).text
                 data['currency'] = price[:2]

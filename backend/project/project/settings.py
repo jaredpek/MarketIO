@@ -34,9 +34,10 @@ INSTALLED_APPS = [
 
     'analytics.apps.AnalyticsConfig',
     'products.apps.ProductsConfig',
+    'profiles.apps.ProfilesConfig',
     'scrapers.apps.ScrapersConfig',
-    'user_account.apps.UserAccountConfig',
-    'watchlist.apps.WatchlistConfig',
+    'search.apps.SearchConfig',
+    'watchlists.apps.WatchlistsConfig',
 ]
 
 REST_FRAMEWORK = {

@@ -4,6 +4,7 @@ from scrapers.headers import get_headers
 from scrapers.scraper import Scraper
 
 class Amazon(Scraper):
+    key = 'AMZN'
     url = 'https://www.amazon.sg'
     sort_choices = {
         'relevance': 'relevanceblender',
@@ -37,6 +38,7 @@ class Amazon(Scraper):
                 data = {}
                 data['title'] = product.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'}).text
                 data['url'] = self.url + product.find('a', {'class': 'a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal'}).get('href')
+                data['id'] = f'{Amazon.key}_{data["url"].split("/")[5]}'
                 data['image'] = product.find('img', {'class': 's-image'}).get('src')
                 data['currency'] = product.find('span', {'class': 'a-price-symbol'}).text
                 data['price'] = float((product.find('span', {'class': 'a-price-whole'}).text + product.find('span', {'class': 'a-price-fraction'}).text).replace(',', ''))

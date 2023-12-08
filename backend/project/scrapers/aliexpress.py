@@ -4,6 +4,7 @@ from scrapers.headers import get_headers
 from scrapers.scraper import Scraper
 
 class AliExpress(Scraper):
+    key = 'ALXP'
     url = 'https://www.aliexpress.com'
     sort_choices = {
         'relevance': 'none',
@@ -40,6 +41,7 @@ class AliExpress(Scraper):
         for product in products:
             try:
                 data = {}
+                data['id'] = f'{AliExpress.key}_{product["productId"]}'
                 data['title'] = product['title']['seoTitle']
                 data['url'] = f'{AliExpress.url}/item/{product["productId"]}.html'
                 data['image'] = f'https:{product["image"]["imgUrl"]}'

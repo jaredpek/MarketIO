@@ -1,59 +1,57 @@
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from django.core.exceptions import ObjectDoesNotExist
 
-from products.general import General as GeneralScraper
-from scrapers.aliexpress import AliExpress as AliExpressScraper
-from scrapers.amazon import Amazon as AmazonScraper
-from scrapers.ezbuy import EzBuy as EzBuyScraper
-from scrapers.lazada import Lazada as LazadaScraper
-from scrapers.qoo10 import Qoo10 as Qoo10Scraper
+from products.models import Product
+from products.serializers import ProductSerializer
+from project.response import Response as Result
 
 class ProductView(APIView):
-    permission_classes = [AllowAny]
+    queryset = Product.objects.all()
+
+    def get(self, request):
+        result = Result()
+        data = result.result
+
+        products = self.queryset.all()
+        data['data']['products'] = ProductSerializer(products, many=True).data
+        data['data']['count'] = len(data['data']['products'])
+
+        return Response(data, status.HTTP_200_OK)
     
-    def get_products(self, params, scraper):
-        return scraper.products(params)
+    def post(self, request, *args, **kwargs):
+        result = Result()
+        data = result.result
+
+        serializer = ProductSerializer(data=request.data)
+        if not serializer.is_valid():
+            for field in serializer.errors:
+                result.set_error(field, serializer.errors[field], many=True)
+            return Response(data, status.HTTP_400_BAD_REQUEST)
+        
+        serializer.create(request.data)
+        result.set_message('create', result.messages['success'])
+        return Response(data, status.HTTP_200_OK)
     
-class General(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, GeneralScraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
+    def delete(self, request):
+        result = Result()
+        data = result.result
 
-class AliExpress(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, AliExpressScraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
+        if not request.user.is_staff:
+            result.set_error('delete', result.messages['unauthorised'])
+            return Response(data, status.HTTP_401_UNAUTHORIZED)
+        
+        try:
+            product = Product.objects.get(pk=request.GET.get('id'))
+            product.delete()
+            result.set_error('delete', result.messages['success'])
+            return Response(data, status.HTTP_200_OK)
+        
+        except ObjectDoesNotExist:
+            result.set_error('product', result.messages['does_not_exist'])
+            return Response(data, status.HTTP_200_OK)
 
-class Amazon(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, AmazonScraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
-
-class EzBuy(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, EzBuyScraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
-
-class Lazada(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, LazadaScraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
-
-class Qoo10(ProductView):
-    def get(self, request):
-        results = self.get_products(request.GET, Qoo10Scraper())
-        if results['status'] == 'error':
-            return Response(results, status.HTTP_400_BAD_REQUEST)
-        return Response(results, status.HTTP_200_OK)
+        except Exception:
+            result.set_error('delete', result.messages['error'])
+            return Response(data, status.HTTP_400_BAD_REQUEST)

@@ -1,6 +1,6 @@
 from project.response import Response
 
-class Scraper(Response):
+class Scraper():
     sort_choices = ['relevance', 'priceasc', 'pricedesc']
     
     def is_positive_int(self, value):
@@ -13,7 +13,7 @@ class Scraper(Response):
             return False
         return True
 
-    def verify(self, params, results):
+    def verify(self, params, response):
         '''
         validates all search parameters = {\n
             search = str, mandatory, search keyword\n
@@ -25,27 +25,27 @@ class Scraper(Response):
         }\n
         '''
         if not params.get('search'):
-            self.set_error('search', 'this is mandatory field', results)
+            response.set_error('search', response.messages['required'])
         if params.get('page') and not self.is_positive_int(params['page']):
-            self.set_error('page', 'this must be a positive integer', results)
+            response.set_error('page', 'this must be a positive integer')
         if params.get('pages') and not self.is_positive_int(params['pages']):
-            self.set_error('pages', 'this must be a positive integer', results)
+            response.set_error('pages', 'this must be a positive integer')
         if params.get('sort') and params['sort'] not in self.sort_choices:
-            self.set_choice_error('sort', '', self.sort_choices, results)
+            response.set_choice_error('sort', '', self.sort_choices)
         if params.get('minPrice') and not self.is_positive_int(params['minPrice']):
-            self.set_error('minPrice', 'this must be a positive integer', results)
+            self.set_error('minPrice', 'this must be a positive integer')
         if params.get('maxPrice') and not self.is_positive_int(params['maxPrice']):
-            self.set_error('maxPrice', 'this must be a positive integer', results)
+            response.set_error('maxPrice', 'this must be a positive integer')
         if not self.valid_price(params.get('minPrice'), params.get('maxPrice')):
-            self.set_error('price', 'maximum price must be larger than minimum price', results)
-        if results['status'] == 'error':
+            response.set_error('price', 'maximum price must be larger than minimum price')
+        if response.result['status'] == 'error':
             return False
         return True
     
     def parse(self, params):
         pass
 
-    def extract(self, url, params):
+    def extract(self, response):
         '''
         returns a list of products = [{\n
             title = str, product name\n
@@ -63,7 +63,7 @@ class Scraper(Response):
     def scrape(self, params):
         '''
         params = parsed search params\n
-        returns results dictionary = {\n
+        returns result dictionary = {\n
             products = list, list of products from the search\n
             count = int, number of products returned from search\n
             last_searched = str, url of the last page that was scraped\n
@@ -72,10 +72,11 @@ class Scraper(Response):
         pass
     
     def products(self, params):
-        results = self.default.copy()
-        if not self.verify(params, results):
-            return results
+        response = Response()
+        result = response.result
+        if not self.verify(params, response):
+            return result
         
         parsed = self.parse(params)
-        results['data'] = self.scrape(parsed)
-        return results
+        result['data'] = self.scrape(parsed)
+        return result
