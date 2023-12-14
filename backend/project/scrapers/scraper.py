@@ -25,7 +25,7 @@ class Scraper():
         }\n
         '''
         if not params.get('search'):
-            response.set_error('search', response.messages['required'])
+            response.set_error('search', response.get_message('required'))
         if params.get('page') and not self.is_positive_int(params['page']):
             response.set_error('page', 'this must be a positive integer')
         if params.get('pages') and not self.is_positive_int(params['pages']):

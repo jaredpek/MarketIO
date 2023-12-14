@@ -26,7 +26,7 @@ class Metric():
 
     def compute(self):
         results = {}
-        for metric in ['lower_quartile', 'mean', 'median', 'upper_quartile', 'product_quantity']:
+        for metric in ['lower_quartile', 'mean', 'median', 'upper_quartile']:
             results[metric] = 0
         if not self.products or not len(self.products):
             return results

@@ -17,7 +17,7 @@ class LoginView(BaseLoginView):
         
         try:
             data = super().post(request, *args, **kwargs).data
-            result.set_message('login', result.messages['success'])
+            result.set_message('login', result.get_message('success'))
             result_data['data']['key'] = data.get('key') or ''
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
@@ -38,10 +38,10 @@ class RegisterView(BaseRegisterView):
             
         try:
             data = super().post(request, *args, **kwargs)
-            result.set_message('registration', result.messages['success'])
+            result.set_message('registration', result.get_message('success'))
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
-            result.set_error('registration', result.messages['success'])
+            result.set_error('registration', result.get_message('success'))
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
 
 class ProfileView(APIView):
@@ -56,7 +56,7 @@ class ProfileView(APIView):
             result_data['data'] = UserSerializer(user).data
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
-            result.set_error('user', result.messages['does_not_exist'])
+            result.set_error('user', result.get_message('does_not_exist'))
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
@@ -75,5 +75,5 @@ class ProfileView(APIView):
         
         user_serializer.save()
         profile_serializer.save()
-        result.set_message('update', result.messages['success'])
+        result.set_message('update', result.get_message('success'))
         return Response(result_data, status.HTTP_200_OK)

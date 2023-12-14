@@ -36,6 +36,12 @@ class Response():
         except Exception:
             self.result['data'][field] = message
 
+    def get_message(self, code):
+        try:
+            return self.messages[code]
+        except:
+            return self.messages['other']
+
     def set_error(self, field, message='', code='', many=False):
         if code:
             message = self.messages.get(code) or self.messages['other']

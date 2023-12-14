@@ -17,7 +17,7 @@ class WatchlistView(APIView):
 
         user = request.user
         if not user:
-            result.set_error('user', result.messages['unauthenticated'])
+            result.set_error('user', result.get_message('unauthenticated'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
         
         items = self.queryset.filter(user=user)
@@ -32,20 +32,20 @@ class WatchlistView(APIView):
         request.data.update({'user': request.user.id})
         serializer = WatchlistItemAddSerializer(data=request.data)
         if not serializer.is_valid():
-            result.set_error('product', result.messages['does_not_exist'])
+            result.set_error('product', result.get_message('does_not_exist'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
         
         try:
             serializer.create(request.data)
-            result.set_message('create', result.messages['success'])
+            result.set_message('create', result.get_message('success'))
             return Response(data, status.HTTP_200_OK)
         
         except IntegrityError:
-            result.set_error('create', result.messages['already_exists'])
+            result.set_error('create', result.get_message('exists'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
         
         except Exception:
-            result.set_error('create', result.messages['error'])
+            result.set_error('create', result.get_message('error'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
   
     def delete(self, request, *args, **kwargs):
@@ -55,17 +55,17 @@ class WatchlistView(APIView):
         try:
             item = WatchlistItem.objects.get(pk=request.GET.get('id'))
             if item.user != request.user:
-                result.set_error('remove', result.messages['unauthorised'])
+                result.set_error('remove', result.get_message('unauthorised'))
                 return Response(data, status.HTTP_401_UNAUTHORIZED)
             
             item.delete()
-            result.set_message('remove', result.messages['success'])
+            result.set_message('remove', result.get_message('success'))
             return Response(data, status.HTTP_200_OK)
         
         except ObjectDoesNotExist:
-            result.set_error('item', result.messages['does_not_exist'])
+            result.set_error('item', result.get_message('does_not_exist'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
 
         except Exception:
-            result.set_error('remove', result.messages['error'])
+            result.set_error('remove', result.get_message('error'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
