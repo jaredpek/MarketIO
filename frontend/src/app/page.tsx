@@ -1,34 +1,33 @@
-import Input from "@/components/fields/Input";
 import Layout from "@/components/layouts/Layout";
+import SearchBar from "@/components/navigation/SearchBar";
 import VerticalSlick from "@/components/navigation/VerticalSlick";
-var pixelWidth = require('string-pixel-width');
 
 export default function Page() {
     return (
         <Layout>
             <div className="w-full mt-10">
-                <div className="flex items-center justify-center">
-                    <span className="mb-3 text-4xl text-center">
+                <div className="flex items-center justify-center mb-8">
+                    <span className="text-4xl sm:text-5xl text-center">
                         E-Commerce, <span className="underline">Simplified</span>
                     </span>
                 </div>
-                <div className="flex gap-1.5 items-center justify-center text-2xl m-auto">
-                    <span className="pt-[3px]">Search</span> 
+                <div className="flex gap-1.5 items-center justify-center m-auto mb-8">
+                    <div className="flex gap-1.5 pt-[0.55px]" style={{fontSize: 24}}>
+                        Search <span className="hidden min-[400px]:block">Anything:</span>
+                    </div>
                     <VerticalSlick 
                         items={[
-                            "shirts",
-                            "electronics",
-                            "food",
-                            "fitness"
+                            "Electronics",
+                            "Fitness",
+                            "Food",
+                            "Games",
+                            "Shirts",
                         ]} 
+                        fontSize={24}
+                        autoplaySpeed={2000}
                     />
                 </div>
-                <div className="flex items-center justify-center">
-                    <Input
-                        className="w-full max-w-[600px]"
-                        placeholder="Search a product"
-                    />
-                </div>
+                <SearchBar className="mx-auto" />
             </div>
         </Layout>
     )

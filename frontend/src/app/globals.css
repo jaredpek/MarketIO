@@ -17,3 +17,7 @@
 .navbar-icon{
     @apply m-auto gray gray-hover cursor-pointer;
 }
+
+.rounded-edge{
+    @apply gray-border rounded-xl;
+}

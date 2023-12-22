@@ -1,14 +1,22 @@
+import { ChangeEventHandler, KeyboardEventHandler } from "react";
+
 export default function Input({
-    className, placeholder
+    className, placeholder, value, onChange, onKeyDown
 }: {
     className: string,
-    placeholder: string
+    placeholder: string,
+    value: string,
+    onChange: ChangeEventHandler<HTMLInputElement> | undefined
+    onKeyDown: KeyboardEventHandler<HTMLInputElement> | undefined
 }) {
     return (
         <input
             type="text"
-            className={ `gray-border rounded-xl px-4 py-3 ${className}` }
+            className={ `rounded-edge px-4 py-3 ${className}` }
             placeholder={ placeholder }
+            value={value}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
         />
     )
 }

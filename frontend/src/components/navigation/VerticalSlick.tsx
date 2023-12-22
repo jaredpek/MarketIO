@@ -7,30 +7,36 @@ import { getKey } from "@/lib/util";
 import { useState } from "react";
 var pixelWidth = require('string-pixel-width');
 
+function getWidth(item: string, fontSize: number) {
+    return pixelWidth(item, {size: fontSize + 2});
+}
+
 export default function VerticalSlick({
-    items
+    items, fontSize, autoplaySpeed
 }: {
-    items: string[]
+    items: string[], 
+    fontSize: number,
+    autoplaySpeed: number
 }) {
-    const [width, setWidth] = useState(100);
+    const [width, setWidth] = useState(getWidth(items[0], fontSize));
     return (
-        <div style={{width}}>
+        <div style={{width, fontSize}}>
             <Slider
                 autoplay
                 vertical
                 infinite
                 dots={false}
-                autoplaySpeed={2000}
+                autoplaySpeed={autoplaySpeed}
                 arrows={false}
-                swipeToSlide={false}
+                swipe={false}
                 pauseOnHover={false}
-                afterChange={(current) => {
-                    setWidth(Math.ceil(pixelWidth(items[current], {size: 24})))
+                beforeChange={(current, next) => {
+                    setWidth(getWidth(items[next], fontSize));
                 }}
             >
                 {
                     items.map(item => {
-                        return <div key={getKey()} className="underline">{item}</div>
+                        return <div key={getKey()} style={{fontSize}}>{item}</div>
                     })
                 }
             </Slider>
