@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SearchBar({
-    className
+    className=""
 }: {
-    className: string
+    className?: string
 }) {
     const [search, setSearch] = useState("");
     const router = useRouter();
