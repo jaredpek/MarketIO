@@ -14,7 +14,7 @@ const links = [
 
 export default function NavBar() {
     return (
-        <div className="w-full h-20 shadow-md py-5 md:h-24 md:py-7 flex items-center justify-center sticky top-0 bg-white">
+        <div className="w-full h-20 shadow-md py-5 md:h-24 md:py-7 flex items-center justify-center sticky top-0 bg-white z-50">
             <NavIcon className={"md:hidden"}>
                 <BiMenu className="navbar-icon text-[25px]" />
             </NavIcon>

@@ -7,7 +7,7 @@ export default function NavLink({
     search: string
 }) {
     return (
-        <Link href={"/search/?search=" + search} className="gray gray-hover text-[15px] flex-shrink-0">
+        <Link href={"/search/?search=" + search} className="gray text-[15px] flex-shrink-0">
             {title}
         </Link>
     )

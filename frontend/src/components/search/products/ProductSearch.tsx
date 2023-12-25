@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductGrid from "./ProductGrid";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductSearch({
     className="",
@@ -9,6 +10,7 @@ export default function ProductSearch({
     className?: string
 }) {
     const [items, setItems] = useState(initial);
+
     return (
         <ProductGrid className={className} items={items} />
     )

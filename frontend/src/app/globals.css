@@ -3,21 +3,25 @@
 @tailwind utilities;
 
 .gray {
-    @apply text-gray-500;
-}
-
-.gray-hover {
-    @apply hover:text-gray-400;
+    @apply text-gray-500 hover:text-gray-400;
 }
 
 .gray-border {
-    @apply border border-gray-400 focus:outline-gray-500;
+    @apply border border-gray-400 focus:outline-none;
 }
 
 .navbar-icon{
-    @apply m-auto gray gray-hover cursor-pointer;
+    @apply m-auto gray cursor-pointer;
 }
 
 .rounded-edge{
-    @apply gray-border rounded-xl;
+    @apply gray-border rounded-md;
+}
+
+.button{
+    @apply flex items-center justify-center h-[44px] cursor-pointer shrink-0 px-4;
+}
+
+.submit{
+    @apply bg-blue-500 hover:bg-blue-400 text-white border-none;
 }

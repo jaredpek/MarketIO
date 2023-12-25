@@ -1,20 +1,13 @@
 import Layout from "@/components/layouts/Layout";
-import SearchBar from "@/components/navigation/SearchBar";
-import FilterOptions from "@/components/search/FilterOptions";
-import ProductAnalytics from "@/components/search/analytics/ProductAnalytics";
+import React from "react";
 import ProductSearch from "@/components/search/products/ProductSearch";
+import SearchSection from "@/components/search/SearchSection";
 
 export default function Page() {
     return (
         <Layout>
-            <div className="flex gap-4">
-                <FilterOptions />
-                <div className="flex-grow">
-                    <SearchBar className="max-w-none" />
-                    <ProductSearch />
-                </div>
-                <ProductAnalytics />
-            </div>
+            <SearchSection />
+            <ProductSearch />
         </Layout>
     )
 }

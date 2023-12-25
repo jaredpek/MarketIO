@@ -1,5 +1,5 @@
 import Layout from "@/components/layouts/Layout";
-import SearchBar from "@/components/navigation/SearchBar";
+import SearchBar from "@/components/fields/SearchBar";
 import VerticalSlick from "@/components/navigation/VerticalSlick";
 
 export default function Page() {
