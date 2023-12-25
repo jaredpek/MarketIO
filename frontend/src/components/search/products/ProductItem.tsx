@@ -20,9 +20,9 @@ export default function ProductItem({
 }) {
     const {id, title, url, image, currency, price, rating, rating_qty, platform} = item;
     return (
-        <Link target="_blank" href={url} id={id} className="hover:shadow-lg cursor-pointer p-3 rounded-md" title={title}>
-            <div className="w-full mb-3">
-                <img className="w-full" src={image} />
+        <Link target="_blank" href={url} id={id} className="hover:shadow-lg cursor-pointer p-3 rounded-md h-[340px]" title={title}>
+            <div className="mb-3 w-full h-[50%] flex items-center justify-center">
+                <img className="h-full" src={image} />
             </div>
             <div className="line-clamp-2 mb-3">{title}</div>
             <div className="mb-3">
