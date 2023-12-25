@@ -23,9 +23,9 @@ export default function SearchBar({
     }
 
     return (
-        <div className={`flex items-center justify-center max-w-[600px] h-[44px] rounded-edge ${className}`}>
+        <div className={`flex items-center justify-center max-w-[600px] h-[44px] rounded ${className}`}>
             <Input
-                className="w-full border-none focus:outline-none pr-0 h-[42px]"
+                className="w-full border-none focus:outline-none pr-0 h-[40px]"
                 placeholder="Search..."
                 value={search}
                 onChange={e => {

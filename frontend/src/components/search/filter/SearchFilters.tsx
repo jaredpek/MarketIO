@@ -78,7 +78,7 @@ export default function SearchFilters({
                     value={scrapers}
                     onChange={data => setScrapers(data)}
                 />
-                <div className='rounded-edge button submit px-4 md:w-[80px]' title='Apply Filters' onClick={applyFilters}>Apply</div>
+                <div className='rounded button submit px-4 md:w-[80px]' title='Apply Filters' onClick={applyFilters}>Apply</div>
             </div>
         </div>
     )

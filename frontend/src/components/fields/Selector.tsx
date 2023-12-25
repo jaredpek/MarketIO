@@ -1,4 +1,4 @@
-import Select, { MultiValue, SingleValue } from "react-select";
+import Select from "react-select";
 
 export interface Option {
     value: any,
@@ -16,7 +16,7 @@ export default function Selector({
     onChange: (data: any) => void
 }) {
     return (
-        <div className={`pl-1.5 gray-border rounded-edge ${className}`}>
+        <div className={`pl-1.5 gray-border rounded ${className}`}>
             <Select
                 isSearchable
                 options={options}

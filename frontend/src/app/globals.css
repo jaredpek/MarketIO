@@ -14,7 +14,7 @@
     @apply m-auto gray cursor-pointer;
 }
 
-.rounded-edge{
+.rounded{
     @apply gray-border rounded-md;
 }
 
@@ -24,4 +24,8 @@
 
 .submit{
     @apply bg-blue-500 hover:bg-blue-400 text-white border-none;
+}
+
+.overlay{
+    @apply fixed top-0 left-0 h-full;
 }

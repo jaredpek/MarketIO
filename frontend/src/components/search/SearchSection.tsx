@@ -15,7 +15,7 @@ function TriggerButton({
 }) {
     return (
         <div
-            className="rounded-edge button w-[55px] gray"
+            className="rounded button w-[55px] gray"
             onClick={onClick}
             title={title}
         >
