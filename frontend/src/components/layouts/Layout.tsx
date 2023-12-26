@@ -10,7 +10,7 @@ export default function Layout({
         <>
             <NavBar />
             <div className="px-3 min-[300px]:px-7 py-7 max-w-[1300px] m-auto">
-                { children }
+                {children}
             </div>
         </>
     )
