@@ -1,5 +1,3 @@
-"use client"
-
 import { TbDeviceAnalytics, TbFilterSearch } from "react-icons/tb";
 import SearchBar from "../fields/SearchBar";
 import SearchFilters from "./filter/SearchFilters";
@@ -11,7 +9,7 @@ function TriggerButton({
 }: {
     title: string,
     children: React.ReactNode,
-    onClick?: React.MouseEventHandler
+    onClick?: React.MouseEventHandler,
 }) {
     return (
         <div
@@ -24,19 +22,23 @@ function TriggerButton({
     )
 }
 
-export default function SearchSection() {
+export default function SearchSection({
+    loading
+}: {
+    loading: boolean
+}) {
     const [filterHidden, setFilterHidden] = useState(true);
     const [analyticsHidden, setAnalyticsHidden] = useState(true);
     return (
         <div className="select-none">
-            <div className="mb-4 w-full">
+            <div className="mb-2 w-full">
                 <div className="flex gap-2 mb-2">
                     <SearchBar className="w-full max-w-none" />
                     <TriggerButton title="Filter" onClick={() => setFilterHidden(!filterHidden)}><TbFilterSearch size={23} /></TriggerButton>
                     <TriggerButton title="Analytics" onClick={() => setAnalyticsHidden(!analyticsHidden)}><TbDeviceAnalytics size={24} /></TriggerButton>
                 </div>
-                <SearchFilters className={`mb-4 ${filterHidden ? "hidden" : ""}`} />
-                <ProductAnalytics className={`mb-4 ${analyticsHidden ? "hidden" : ""}`} />
+                <SearchFilters className={`mb-2 ${filterHidden ? "hidden" : ""}`} loading={loading} />
+                <ProductAnalytics className={`mb-2 ${analyticsHidden ? "hidden" : ""}`} />
             </div>
         </div>
     )

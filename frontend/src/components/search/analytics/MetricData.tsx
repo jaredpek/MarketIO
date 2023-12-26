@@ -6,6 +6,20 @@ export interface Metric {
     quantity_reviewed: number
 }
 
+function ValueDisplay({
+    title, value
+}: {
+    title: string,
+    value: number,
+}) {
+    return (
+        <div>
+            <div className="font-semibold">{title}</div>
+            <div>{value}</div>
+        </div>
+    )
+}
+
 export default function MetricData({
     title, metric
 }: {
@@ -14,12 +28,14 @@ export default function MetricData({
 }) {
     const {lower_quartile, mean, median, upper_quartile} = metric;
     return (
-        <div>
-            <div className="font-semibold">{title}</div>
-            <div>Mean: {mean}</div>
-            <div>Median: {median}</div>
-            <div>Lower Quartile: {lower_quartile}</div>
-            <div>Upper Quartile: {upper_quartile}</div>
+        <div className="rounded px-4 py-3">
+            <div className="font-semibold underline">{title}</div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <ValueDisplay title={`Mean ${title}`} value={mean} />
+                <ValueDisplay title={`Median ${title}`} value={median} />
+                <ValueDisplay title="Lower Quartile" value={lower_quartile} />
+                <ValueDisplay title="Upper Quartile" value={upper_quartile} />
+            </div>
         </div>
     )
 }

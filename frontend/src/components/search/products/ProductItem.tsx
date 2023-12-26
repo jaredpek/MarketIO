@@ -22,7 +22,7 @@ export default function ProductItem({
     return (
         <Link target="_blank" href={url} id={id} className="hover:shadow-lg cursor-pointer p-3 rounded-md h-[340px]" title={title}>
             <div className="mb-3 w-full h-[50%] flex items-center justify-center">
-                <img className="h-full" src={image} />
+                <img className="h-full" src={image} alt="No Product Image" />
             </div>
             <div className="line-clamp-2 mb-3">{title}</div>
             <div className="mb-3">

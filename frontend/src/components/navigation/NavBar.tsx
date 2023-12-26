@@ -19,7 +19,7 @@ export default function NavBar() {
             <SideBar links={links} />
             <NavIcon className={"h-full flex flex-grow md:flex-grow-0 flex-shrink-0 items-center justify-center"}>
                 <Link href={"/"} className="h-full">
-                    <img src="/images/marketio_logo.png" className="h-full m-auto" />
+                    <img src="/images/marketio_logo.png" className="h-full m-auto" alt="MarketIO" />
                 </Link>
             </NavIcon>
             <div className="w-full flex-grow hidden md:flex gap-10 items-center justify-center">

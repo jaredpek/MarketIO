@@ -29,7 +29,7 @@ export default function SideBar({
             <div className={`overlay w-[280px] bg-white p-12 shadow-2xl ${hidden ? "hidden" : ""}`}>
                 <div className="w-full h-[45px] flex justify-between items-center mb-10">
                     <Link href={"/"} className="h-full">
-                        <img src="/images/marketio_logo.png" className="h-full" />
+                        <img src="/images/marketio_logo.png" className="h-full" alt="MarketIO" />
                     </Link>
                     <RxCross1 className="cursor-pointer gray" size={30} onClick={toggle} />
                 </div>

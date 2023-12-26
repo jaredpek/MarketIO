@@ -15,6 +15,7 @@ export default function ProductRating({
                     <img 
                         src="/images/zero_rating.png"
                         style={{width, height}}
+                        alt={`${rating} out of 5 stars`}
                     />
                 </span>
                 <span className="absolute top-0 left-0">
@@ -26,6 +27,7 @@ export default function ProductRating({
                             objectFit: "cover", 
                             objectPosition: "left"
                         }}
+                        alt={`${rating} out of 5 stars`}
                     />
                 </span>
             </div>

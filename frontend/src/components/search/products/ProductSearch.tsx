@@ -1,6 +1,4 @@
-"use client"
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import ProductGrid from "./ProductGrid";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
@@ -8,12 +6,13 @@ import Loader from "@/components/navigation/Loader";
 import Error from "@/components/fields/Error";
 
 export default function ProductSearch({
-    className="",
+    loading, setLoading, className="",
 }: {
+    loading: boolean,
+    setLoading: Dispatch<SetStateAction<boolean>>,
     className?: string
 }) {
     const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(false);
     const params = useSearchParams();
 
     useEffect(() => {
@@ -29,7 +28,7 @@ export default function ProductSearch({
 
     return (
         loading ?
-        <Loader /> :
+        <Loader message="Searching Products..." /> :
         !items.length ?
         <Error message="No Products Found" /> :
         <ProductGrid className={className} items={items} />

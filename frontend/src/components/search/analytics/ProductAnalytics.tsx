@@ -1,50 +1,36 @@
-"use client"
-
 import { useEffect, useState } from "react";
-import AnalyticsGrid from "./AnalyticsGrid";
+import AnalyticsGrid, { Analytics } from "./AnalyticsGrid";
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import Loader from "@/components/navigation/Loader";
+import Error from "@/components/fields/Error";
 
 export default function ProductAnalytics({
     className="",
 }: {
     className?: string
 }) {
-    const [analytics, setAnalytics] = useState({
-        price: {
-            lower_quartile: 39.59,
-            mean: 624.14,
-            median: 359.9,
-            upper_quartile: 929.0,
-            quantity_reviewed: 1033
-        },
-        rating: {
-            lower_quartile: 0,
-            mean: 1.87,
-            median: 0,
-            upper_quartile: 4.7,
-            quantity_reviewed: 1033
-        }
-    });
+    const [analytics, setAnalytics] = useState <Analytics | null> (null);
+    const [loading, setLoading] = useState(true);
+    const params = useSearchParams();
 
     useEffect(() => {
-        setAnalytics({
-            price: {
-                lower_quartile: 39.59,
-                mean: 624.14,
-                median: 359.9,
-                upper_quartile: 929.0,
-                quantity_reviewed: 1033
-            },
-            rating: {
-                lower_quartile: Math.random(),
-                mean: 1.87,
-                median: 0,
-                upper_quartile: 4.7,
-                quantity_reviewed: 1033
-            }
-        })
-    }, []);
+        setLoading(true);
+        axios.get(`http://127.0.0.1:8000/api/analytics/?search=${params.get("search") || ""}`)
+            .then(({data}) => setAnalytics(data.data.analytics))
+            .catch((errors) => console.log(errors))
+            .finally(() => setLoading(false));
+    }, [params.get("search")]);
 
     return (
-        <AnalyticsGrid className={className} analytics={analytics} />
+        <div className={className}>
+            {
+                loading ?
+                <Loader message="Generating Analytics..." /> :
+                analytics ?
+                <AnalyticsGrid analytics={analytics} /> :
+                <Error message="No Products to Generate Analytics" />
+            }
+        </div>
     )
 }

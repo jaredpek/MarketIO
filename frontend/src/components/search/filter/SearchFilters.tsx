@@ -7,8 +7,9 @@ import { Option } from '@/components/fields/Selector';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SearchFilters({
-    className=""
+    loading, className=""
 }: {
+    loading: boolean,
     className?: string
 }) {
     const [minPrice, setMinPrice] = useState("");
@@ -43,6 +44,7 @@ export default function SearchFilters({
     }, [params])
 
     function applyFilters() {
+        if (loading) return;
         const search = `search=${params.get("search")}&`;
         const minPriceStr = minPrice ? `minPrice=${minPrice}&` : "";
         const maxPriceStr = maxPrice ? `maxPrice=${maxPrice}&` : "";
@@ -78,7 +80,7 @@ export default function SearchFilters({
                     value={scrapers}
                     onChange={data => setScrapers(data)}
                 />
-                <div className='rounded button submit px-4 md:w-[80px]' title='Apply Filters' onClick={applyFilters}>Apply</div>
+                <div className={`rounded button submit px-4 md:w-[80px] ${loading ? "!cursor-not-allowed !bg-blue-400" : ""}`} title='Apply Filters' onClick={applyFilters}>Apply</div>
             </div>
         </div>
     )
