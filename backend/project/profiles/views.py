@@ -18,7 +18,8 @@ class LoginView(BaseLoginView):
         try:
             data = super().post(request, *args, **kwargs).data
             result.set_message('login', result.get_message('success'))
-            result_data['data']['key'] = data.get('key') or ''
+            result_data['data']['access'] = data.get('access') or ''
+            result_data['data']['refresh'] = data.get('refresh') or ''
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
             result.set_error('login', 'invalid "username" or "password" provided')
