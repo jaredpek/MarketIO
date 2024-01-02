@@ -6,11 +6,15 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from dj_rest_auth.views import LoginView as BaseLoginView
-from dj_rest_auth.registration.views import RegisterView as BaseRegisterView
+from dj_rest_auth.views import LoginView
+from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-class LoginView(BaseLoginView):
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
+class CredentialLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         result = Result()
         result_data = result.result
@@ -25,7 +29,7 @@ class LoginView(BaseLoginView):
             result.set_error('login', 'invalid "username" or "password" provided')
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
 
-class RegisterView(BaseRegisterView):
+class CredentialRegisterView(RegisterView):
     def post(self, request, *args, **kwargs):
         result = Result()
         result_data = result.result
@@ -44,6 +48,11 @@ class RegisterView(BaseRegisterView):
         except Exception:
             result.set_error('registration', result.get_message('success'))
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
+
+class GoogleLoginView(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "http://127.0.0.1:3000/"
+    client_class = OAuth2Client
 
 class ProfileView(APIView):
     queryset = User.objects.all()

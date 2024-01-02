@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 
     "dj_rest_auth",
     "dj_rest_auth.registration",
@@ -41,6 +43,24 @@ INSTALLED_APPS = [
     "search.apps.SearchConfig",
     "watchlists.apps.WatchlistsConfig",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": "541466706815-1ankejcd3qh8v9dcarjf97054hoie1e8.apps.googleusercontent.com",
+            "secret": "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",
+            "key": "",
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
+}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),

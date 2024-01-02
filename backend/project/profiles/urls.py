@@ -1,8 +1,9 @@
 from django.urls import path
-from profiles.views import LoginView, RegisterView, ProfileView
+from profiles.views import CredentialLoginView, CredentialRegisterView, GoogleLoginView, ProfileView
 
 urlpatterns = [
     path('profile/', ProfileView.as_view()),
-    path('auth/login/', LoginView.as_view()),
-    path('auth/register/', RegisterView.as_view()),
+    path('auth/login/', CredentialLoginView.as_view()),
+    path('auth/register/', CredentialRegisterView.as_view()),
+    path('auth/login/google/', GoogleLoginView.as_view()),
 ]
