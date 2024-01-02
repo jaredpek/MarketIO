@@ -1,14 +1,17 @@
 import Link from "next/link";
 
 export default function NavLink({
-    title, search
+    title, children, href="/search/?search=", search="", className=""
 }: {
     title: string,
-    search: string
+    children?: React.ReactNode
+    href?: string,
+    search?: string,
+    className?: string
 }) {
     return (
-        <Link href={"/search/?search=" + search} className="gray text-[15px] flex-shrink-0">
-            {title}
+        <Link href={search ? `${href}${search}` : href} className={`gray text-[15px] flex-shrink-0 ${className}`}>
+            {children}{title}
         </Link>
     )
 }

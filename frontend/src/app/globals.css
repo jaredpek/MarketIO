@@ -27,5 +27,5 @@
 }
 
 .overlay{
-    @apply fixed top-0 left-0 h-full;
+    @apply fixed top-0 left-0 h-full z-50;
 }
