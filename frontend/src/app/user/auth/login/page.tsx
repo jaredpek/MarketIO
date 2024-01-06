@@ -1,9 +1,13 @@
 import Layout from "@/components/layouts/Layout";
+import AuthLayout from "@/components/user/AuthLayout";
+import CredentialLogin from "@/components/user/CredentialLogin";
 
 export default function Page() {
     return (
         <Layout>
-            Login
+            <AuthLayout>
+                <CredentialLogin />
+            </AuthLayout>
         </Layout>
     )
 }

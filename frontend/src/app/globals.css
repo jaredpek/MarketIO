@@ -19,7 +19,7 @@
 }
 
 .button{
-    @apply flex items-center justify-center h-[44px] cursor-pointer shrink-0 px-4;
+    @apply flex items-center justify-center h-[44px] border-none cursor-pointer shrink-0 px-4;
 }
 
 .submit{

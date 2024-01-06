@@ -27,18 +27,16 @@ export default function UserMenu({
     const path = usePathname();
 
     function getRedirect() {
-        if (path.includes("login") || path.includes("register")) {
-            return params.toString();
-        }
-        return `${path}?${params.toString()}`
+        if (path.includes("login") || path.includes("register")) return `${params.toString()}`;
+        return `redirect=${path}?${params.toString()}`
     }
 
     return (
         <div className={`absolute right-5 py-2 bg-white rounded ${hidden ? "hidden" : ""}`} >
-            <MenuLink title="Login" href={`/user/auth/login?redirect=${getRedirect()}`}>
+            <MenuLink title="Login" href={`/user/auth/login?${getRedirect()}`}>
                 <IoMdLogIn size={18} />
             </MenuLink>
-            <MenuLink title="Register" href={`/user/auth/register?redirect=${getRedirect()}`}>
+            <MenuLink title="Register" href={`/user/auth/register?${getRedirect()}`}>
                 <PiUserPlus size={18} />
             </MenuLink>
             <MenuLink title="Profile" href="/user/profile">

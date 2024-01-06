@@ -14,7 +14,7 @@ export default function Input({
     return (
         <input
             type={type}
-            className={`rounded px-4 py-3 ${className}`}
+            className={`rounded px-4 py-[9px] select-none ${className}`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}

@@ -54,6 +54,21 @@ class GoogleLoginView(SocialLoginView):
     callback_url = "http://127.0.0.1:3000/"
     client_class = OAuth2Client
 
+    def post(self, request, *args, **kwargs):
+        result = Result()
+        result_data = result.result
+
+        try:
+            data = super().post(request, *args, **kwargs).data
+            result.set_message('login', result.get_message('success'))
+            result_data['data']['access'] = data.get('access') or ''
+            result_data['data']['refresh'] = data.get('refresh') or ''
+            return Response(result_data, status.HTTP_200_OK)
+        except Exception:
+            result.set_error('login', 'invalid "username" or "password" provided')
+            return Response(result_data, status.HTTP_400_BAD_REQUEST)
+
+
 class ProfileView(APIView):
     queryset = User.objects.all()
     
