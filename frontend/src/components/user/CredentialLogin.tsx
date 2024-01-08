@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Input from "../fields/Input";
 import Password from "../fields/Password";
+import { signIn } from "next-auth/react";
 
 export default function CredentialLogin({
     className=""
@@ -11,6 +12,18 @@ export default function CredentialLogin({
 }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    function login() {
+        if (username && password) signIn(
+            "credentials",
+            {
+                username, password,
+                redirect: true,
+                callbackUrl: "/"
+            }
+        )
+    }
+
     return (
         <div className={className}>
             <span>Username</span>
@@ -19,14 +32,25 @@ export default function CredentialLogin({
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 className="w-full mb-2"
+                onKeyDown={e => {
+                    if (e.key === "Enter") login();
+                }}
             />
             <span>Password</span>
             <Password
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="mb-4"
+                onKeyDown={e => {
+                    if (e.key === "Enter") login();
+                }}
             />
-            <div className="rounded button submit">Login</div>
+            <div
+                className="rounded button submit"
+                onClick={login}
+            >
+                Login
+            </div>
         </div>
     )
 }

@@ -19,11 +19,15 @@
 }
 
 .button{
-    @apply flex items-center justify-center h-[44px] border-none cursor-pointer shrink-0 px-4;
+    @apply flex items-center justify-center h-[44px] border-none cursor-pointer shrink-0 px-4 select-none;
 }
 
 .submit{
     @apply bg-blue-500 hover:bg-blue-400 text-white border-none;
+}
+
+.google{
+    @apply bg-red-500 hover:bg-red-400 text-white;
 }
 
 .overlay{

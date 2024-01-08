@@ -1,14 +1,15 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, KeyboardEventHandler, useState } from "react";
 import Input from "./Input";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Password({
-    className="", placeholder="Password", value, onChange
+    className="", placeholder="Password", value, onChange, onKeyDown
 }: {
     className?: string,
     placeholder?: string,
     value: string,
     onChange: ChangeEventHandler<HTMLInputElement>,
+    onKeyDown?: KeyboardEventHandler
 }) {
     const [hidden, setHidden] = useState(true);
     return (
@@ -19,6 +20,7 @@ export default function Password({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
             />
             <div
                 className="pr-4 gray cursor-pointer"
