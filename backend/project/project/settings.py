@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 
     "allauth",
     "allauth.account",
@@ -62,11 +63,13 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+LIFETIME = 14
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=LIFETIME),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=LIFETIME),
     "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "SIGNING_KEY": "YFgDEzmrLi3XcCgephBkR8Vf4WoTKjvN5jJwBh6txxJW8j7Sjwx5YSMNZNeeM4FD", 
     "ALGORITHM": "HS512",

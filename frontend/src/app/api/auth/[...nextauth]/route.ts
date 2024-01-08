@@ -28,12 +28,12 @@ const signInHandlers = {
         }
     }
 }
-const signInProviders: string[] = Object.keys(signInHandlers);
+const signInProviders = Object.keys(signInHandlers);
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
-        maxAge: (30 * 24 * 60 - 1) * 60
+        maxAge: (14 * 24 * 60 - 1) * 60
     },
     providers: [
         CredentialsProvider({
@@ -83,9 +83,10 @@ const authOptions: NextAuthOptions = {
         },
         jwt: async ({user, token, account}) => {
             if (user && account) {
-                const {access, created, expires}: any = (account.provider === "credentials") ? user : account.meta;
+                const {access, refresh, created, expires}: any = (account.provider === "credentials") ? user : account.meta;
                 const tokenData: JWT = {
                     sub: access,
+                    ref: refresh,
                     iat: created,
                     exp: expires,
                 }

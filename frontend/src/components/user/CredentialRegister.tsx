@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Input from "../fields/Input";
 import Password from "../fields/Password";
+import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export default function CredentialRegister({
     className=""
@@ -13,8 +16,30 @@ export default function CredentialRegister({
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [email, setEmail] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const params = useSearchParams();
+
+    async function register() {
+        await axios.post(
+            "/api/auth/register",
+            {
+                username, email,
+                password1: password,
+                password2: passwordConfirmation,
+            }
+        )
+        .then(response => {
+            signIn(
+                "credentials", 
+                {
+                    username, password,
+                    redirect: true,
+                    callbackUrl: params.get("redirect") || "/"
+                }
+            )
+        })
+        .catch(errors => console.log(errors))
+    }
+
     return (
         <div className={className}>
             <span>Username</span>
@@ -24,19 +49,6 @@ export default function CredentialRegister({
                 onChange={e => setUsername(e.target.value)}
                 className="w-full mb-2"
             />
-            <span>Password</span>
-            <Password
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="mb-4"
-            />
-            <span>Password Confirmation</span>
-            <Password
-                placeholder="Password Confirmation"
-                value={passwordConfirmation}
-                onChange={e => setPasswordConfirmation(e.target.value)}
-                className="mb-2"
-            />
             <span>Email</span>
             <Input
                 type="email"
@@ -45,21 +57,25 @@ export default function CredentialRegister({
                 onChange={e => setEmail(e.target.value)}
                 className="w-full mb-2"
             />
-            <span>First Name</span>
-            <Input
-                placeholder="First Name"
-                value={firstName}
-                onChange={e => setFirstName(e.target.value)}
+            <span>Password</span>
+            <Password
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 className="w-full mb-2"
             />
-            <span>Last Name</span>
-            <Input
-                placeholder="Last Name"
-                value={lastName}
-                onChange={e => setLastName(e.target.value)}
+            <span>Password Confirmation</span>
+            <Password
+                placeholder="Password Confirmation"
+                value={passwordConfirmation}
+                onChange={e => setPasswordConfirmation(e.target.value)}
                 className="w-full mb-4"
             />
-            <div className="rounded button submit">Register</div>
+            <div
+                className="rounded button submit"
+                onClick={register}
+            >
+                Register
+            </div>
         </div>
     )
 }
