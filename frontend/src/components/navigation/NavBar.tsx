@@ -1,9 +1,8 @@
 import Link from "next/link";
-import {BiUserCircle} from "react-icons/bi";
-import NavLink from "./NavLink";
 import NavIcon from "./NavIcon";
-import { getKey } from "@/lib/util";
 import SideBar from "./SideBar";
+import UserSection from "./UserSection";
+import NavLinkSection from "./NavLinkSection";
 
 const links = [
     {title: "Smartphones", search: "smartphones"},
@@ -22,16 +21,8 @@ export default function NavBar() {
                     <img src="/images/marketio_logo.png" className="h-full m-auto" alt="MarketIO" />
                 </Link>
             </NavIcon>
-            <div className="w-full flex-grow hidden md:flex gap-10 items-center justify-center">
-                {
-                    links.map(({title, search}) => {
-                        return <NavLink title={title} search={search} key={getKey()} />
-                   })
-               }
-            </div>
-            <NavIcon>
-                <BiUserCircle className="navbar-icon text-[35px] md:text-[45px]" />
-            </NavIcon>
+            <NavLinkSection links={links} />
+            <UserSection />
         </div>
     )
 }

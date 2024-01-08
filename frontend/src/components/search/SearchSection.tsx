@@ -3,24 +3,7 @@ import SearchBar from "../fields/SearchBar";
 import SearchFilters from "./filter/SearchFilters";
 import ProductAnalytics from "./analytics/ProductAnalytics";
 import { useState } from "react";
-
-function TriggerButton({
-    title, children, onClick
-}: {
-    title: string,
-    children: React.ReactNode,
-    onClick?: React.MouseEventHandler,
-}) {
-    return (
-        <div
-            className="rounded button w-[55px] gray"
-            onClick={onClick}
-            title={title}
-        >
-            {children}
-        </div>
-    )
-}
+import TriggerButton from "./TriggerButton";
 
 export default function SearchSection({
     loading

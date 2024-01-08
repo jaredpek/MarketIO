@@ -1,5 +1,6 @@
-import "./globals.css"
-import { Inter } from "next/font/google"
+import AuthProvider from "@/components/layouts/AuthProvider";
+import "./globals.css";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -10,12 +11,16 @@ export const metadata = {
 export default function RootLayout({
     children,
 }: {
-    children: React.ReactNode
+    children?: React.ReactNode
 }) {
     return (
         <html lang="en">
             <link rel="icon" href="/images/marketio_icon.png" />
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                <AuthProvider>
+                    {children}
+                </AuthProvider>
+            </body>
         </html>
     )
 }

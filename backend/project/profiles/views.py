@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+from project.settings import LIFETIME
 from django.contrib.auth.models import User
 from project.response import Response as Result
 from profiles.serializers import UserSerializer, ProfileSerializer
@@ -6,11 +8,26 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from dj_rest_auth.views import LoginView as BaseLoginView
-from dj_rest_auth.registration.views import RegisterView as BaseRegisterView
+from dj_rest_auth.views import LoginView, LogoutView as BaseLogoutView
+from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-class LoginView(BaseLoginView):
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
+def convertDate(date):
+    return int(date.timestamp() * 1000)
+
+def getLifetime(lifetime=LIFETIME):
+    today = datetime.now()
+    expiry = today + timedelta(days=lifetime)
+    return {
+        'created': convertDate(today),
+        'expires': convertDate(expiry)
+    } 
+
+class CredentialLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         result = Result()
         result_data = result.result
@@ -18,13 +35,16 @@ class LoginView(BaseLoginView):
         try:
             data = super().post(request, *args, **kwargs).data
             result.set_message('login', result.get_message('success'))
-            result_data['data']['key'] = data.get('key') or ''
+            result_data['data']['access'] = data.get('access') or ''
+            result_data['data']['refresh'] = data.get('refresh') or ''
+            result_data['data']['created'] = datetime.now()
+            result_data['data'].update(getLifetime())
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
             result.set_error('login', 'invalid "username" or "password" provided')
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
 
-class RegisterView(BaseRegisterView):
+class CredentialRegisterView(RegisterView):
     def post(self, request, *args, **kwargs):
         result = Result()
         result_data = result.result
@@ -43,6 +63,38 @@ class RegisterView(BaseRegisterView):
         except Exception:
             result.set_error('registration', result.get_message('success'))
             return Response(result_data, status.HTTP_400_BAD_REQUEST)
+
+class GoogleLoginView(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = 'http://127.0.0.1:3000/'
+    client_class = OAuth2Client
+
+    def post(self, request, *args, **kwargs):
+        result = Result()
+        result_data = result.result
+
+        try:
+            data = super().post(request, *args, **kwargs).data
+            result.set_message('login', result.get_message('success'))
+            result_data['data']['access'] = data.get('access') or ''
+            result_data['data']['refresh'] = data.get('refresh') or ''
+            result_data['data'].update(getLifetime())
+            return Response(result_data, status.HTTP_200_OK)
+        except Exception:
+            result.set_error('login', 'invalid "username" or "password" provided')
+            return Response(result_data, status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutView(BaseLogoutView):
+    def post(self, request, *args, **kwargs):
+        result = Result()
+        result_data = result.result
+        message = super().post(request, *args, **kwargs).data.get('detail')
+        if 'success' in message.lower():
+            result.set_message('logout', result.get_message('success'))
+            return Response(result_data, status.HTTP_200_OK)
+        result.set_error('logout', 'user is already logged out')
+        return Response(result_data, status.HTTP_400_BAD_REQUEST)
 
 class ProfileView(APIView):
     queryset = User.objects.all()

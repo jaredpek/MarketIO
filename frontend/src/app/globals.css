@@ -18,14 +18,22 @@
     @apply gray-border rounded-md;
 }
 
+.trigger{
+    @apply flex items-center justify-center cursor-pointer select-none;
+}
+
 .button{
-    @apply flex items-center justify-center h-[44px] cursor-pointer shrink-0 px-4;
+    @apply trigger h-[44px] border-none shrink-0 px-4;
 }
 
 .submit{
     @apply bg-blue-500 hover:bg-blue-400 text-white border-none;
 }
 
+.google{
+    @apply bg-red-500 hover:bg-red-400 text-white;
+}
+
 .overlay{
-    @apply fixed top-0 left-0 h-full;
+    @apply fixed top-0 left-0 h-full z-50;
 }
