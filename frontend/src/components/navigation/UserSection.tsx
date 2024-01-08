@@ -7,17 +7,13 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import NavLink from "./NavLink";
+import { getRedirect } from "@/lib/util";
 
 export default function UserSection() {
     const [hidden, setHidden] = useState(true);
     const path = usePathname();
     const params = useSearchParams();
     const {status} = useSession();
-
-    function getRedirect() {
-        if (path.includes("login") || path.includes("register")) return `${params.toString()}`;
-        return `redirect=${path}?${params.toString()}`
-    }
 
     return (
         <NavIcon className="relative">
@@ -30,7 +26,7 @@ export default function UserSection() {
                     />
                     <UserMenu hidden={hidden} />
                 </> :
-                <NavLink title="Login" href={`/user/auth/login?${getRedirect()}`} className="rounded p-3 border-none submit !text-white" />
+                <NavLink title="Login" href={`/user/auth/login?${getRedirect(path, params)}`} className="rounded p-3 border-none submit !text-white" />
             }
         </NavIcon>
     )

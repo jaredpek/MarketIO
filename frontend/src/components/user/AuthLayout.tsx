@@ -1,8 +1,9 @@
 "use client"
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import GoogleAuth from "./GoogleAuth";
 import Link from "next/link";
+import { getRedirect } from "@/lib/util";
 
 export default function AuthLayout({
     children
@@ -10,6 +11,8 @@ export default function AuthLayout({
     children?: React.ReactNode
 }) {
     const path = usePathname();
+    const params = useSearchParams();
+    
     return (
         <div className="max-w-[600px] m-auto">
             {children}
@@ -20,10 +23,10 @@ export default function AuthLayout({
                     {
                         (path.includes("login")) ?
                         <>
-                            Don't have an account? Register <Link href="/user/auth/register" className="underline text-blue-500 hover:text-blue-400">here!</Link>
+                            Don't have an account? Register <Link href={`/user/auth/register?${getRedirect(path, params)}`} className="underline text-blue-500 hover:text-blue-400">here!</Link>
                         </> :
                         <>
-                            Already have an account? Login <Link href="/user/auth/login" className="underline text-blue-500 hover:text-blue-400">here!</Link>
+                            Already have an account? Login <Link href={`/user/auth/login?${getRedirect(path, params)}`} className="underline text-blue-500 hover:text-blue-400">here!</Link>
                         </>
                     }
                 </div>

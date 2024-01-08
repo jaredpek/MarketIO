@@ -4,6 +4,7 @@ import { useState } from "react";
 import Input from "../fields/Input";
 import Password from "../fields/Password";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export default function CredentialLogin({
     className=""
@@ -12,6 +13,7 @@ export default function CredentialLogin({
 }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const params = useSearchParams();
 
     function login() {
         if (username && password) signIn(
@@ -19,7 +21,7 @@ export default function CredentialLogin({
             {
                 username, password,
                 redirect: true,
-                callbackUrl: "/"
+                callbackUrl: params.get("redirect") || "/"
             }
         )
     }

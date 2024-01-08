@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from project.response import Response as Result
 from profiles.serializers import UserSerializer, ProfileSerializer
@@ -14,6 +15,19 @@ from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
+LIFETIME = 30
+
+def convertDate(date) :
+    return int(date.timestamp() * 1000)
+
+def getLifetime(lifetime=LIFETIME):
+    today = datetime.now()
+    expiry = today + timedelta(days=lifetime)
+    return {
+        "created": convertDate(today),
+        "expires": convertDate(expiry)
+    } 
+
 class CredentialLoginView(LoginView):
     def post(self, request, *args, **kwargs):
         result = Result()
@@ -24,6 +38,8 @@ class CredentialLoginView(LoginView):
             result.set_message('login', result.get_message('success'))
             result_data['data']['access'] = data.get('access') or ''
             result_data['data']['refresh'] = data.get('refresh') or ''
+            result_data['data']['created'] = datetime.now()
+            result_data['data'].update(getLifetime())
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
             result.set_error('login', 'invalid "username" or "password" provided')
@@ -63,6 +79,7 @@ class GoogleLoginView(SocialLoginView):
             result.set_message('login', result.get_message('success'))
             result_data['data']['access'] = data.get('access') or ''
             result_data['data']['refresh'] = data.get('refresh') or ''
+            result_data['data'].update(getLifetime())
             return Response(result_data, status.HTTP_200_OK)
         except Exception:
             result.set_error('login', 'invalid "username" or "password" provided')

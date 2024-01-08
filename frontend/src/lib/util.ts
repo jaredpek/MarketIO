@@ -1,3 +1,5 @@
+import { ReadonlyURLSearchParams } from "next/navigation";
+
 export function getKey() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     const length = 32;
@@ -9,4 +11,10 @@ export function getKey() {
     }
 
     return result;
+}
+
+export function getRedirect(path: string, params: ReadonlyURLSearchParams) {
+    if (path.includes("login") || path.includes("register")) return `${params.toString()}`;
+    const paramStr = params.toString();
+    return `redirect=${path}${paramStr ? "?" + paramStr : ""}`
 }
