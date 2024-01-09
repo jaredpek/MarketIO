@@ -30,7 +30,7 @@ const signInHandlers = {
 }
 const signInProviders = Object.keys(signInHandlers);
 
-const authOptions: NextAuthOptions = {
+const authOptions = {
     session: {
         strategy: "jwt",
         maxAge: (14 * 24 * 60 - 1) * 60
@@ -124,7 +124,7 @@ const authOptions: NextAuthOptions = {
         }
     },
     secret: process.env.NEXTAUTH_SECRET
-}
+} as NextAuthOptions;
 
 const handler = NextAuth(authOptions);
 

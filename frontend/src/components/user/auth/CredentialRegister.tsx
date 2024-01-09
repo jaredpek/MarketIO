@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react";
-import Input from "../fields/Input";
-import Password from "../fields/Password";
+import Input from "../../fields/Input";
+import Password from "../../fields/Password";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { action } from "@/lib/util";
 
 export default function CredentialRegister({
     className=""
@@ -16,32 +17,38 @@ export default function CredentialRegister({
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [email, setEmail] = useState("");
+    const [state, setState] = useState("none" as action);
     const params = useSearchParams();
 
     async function register() {
-        await axios.post(
-            "/api/auth/register",
-            {
-                username, email,
-                password1: password,
-                password2: passwordConfirmation,
-            }
-        )
-        .then(response => {
-            signIn(
-                "credentials", 
+        if (username && email && password && passwordConfirmation) {
+            await axios.post(
+                "/api/auth/register",
                 {
-                    username, password,
-                    redirect: true,
-                    callbackUrl: params.get("redirect") || "/"
+                    username, email,
+                    password1: password,
+                    password2: passwordConfirmation,
                 }
-            )
-        })
-        .catch(errors => console.log(errors))
+            ).then(response => {
+                signIn(
+                    "credentials", 
+                    {
+                        username, password,
+                        redirect: true,
+                        callbackUrl: params.get("redirect") || "/"
+                    }
+                )
+            }).catch(errors => console.log(errors))
+        }
     }
 
     return (
-        <div className={className}>
+        <div
+            className={className}
+            onKeyDown={e => {
+                if (e.key === "Enter") register();
+            }}
+        >
             <span>Username</span>
             <Input
                 placeholder="Username"

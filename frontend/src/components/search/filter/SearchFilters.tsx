@@ -80,7 +80,7 @@ export default function SearchFilters({
                     value={scrapers}
                     onChange={data => setScrapers(data)}
                 />
-                <div className={`rounded button submit px-4 md:w-[80px] ${loading ? "!cursor-not-allowed !bg-blue-400" : ""}`} title='Apply Filters' onClick={applyFilters}>Apply</div>
+                <div className={`rounded button submit px-4 md:w-[80px] ${loading ? "loading" : ""}`} title='Apply Filters' onClick={applyFilters}>Apply</div>
             </div>
         </div>
     )
