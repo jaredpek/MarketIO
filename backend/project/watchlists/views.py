@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 
 from project.response import Response as Result
-from django.db.utils import IntegrityError
+from products.models import Product
 from watchlists.models import WatchlistItem
 from watchlists.serializers import WatchlistItemViewSerializer, WatchlistItemAddSerializer
 
@@ -38,10 +38,10 @@ class WatchlistView(APIView):
         
         try:
             serializer.create(request.data)
-            result.set_message('watchlist add', result.get_message('success'))
+            result.set_message('add', result.get_message('success'))
             return Response(data, status.HTTP_200_OK)
         except Exception:
-            result.set_error('watchlist add', result.get_message('exists'))
+            result.set_error('add', result.get_message('exists'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
 
   
@@ -50,7 +50,13 @@ class WatchlistView(APIView):
         data = result.result
 
         try:
-            item = WatchlistItem.objects.get(pk=request.GET.get('id'))
+            product = Product.objects.get(key=request.GET.get('key'))
+        except Exception:
+            result.set_error('product', result.get_message('does_not_exist'))
+            return Response(data, status.HTTP_400_BAD_REQUEST)
+
+        try:
+            item = WatchlistItem.objects.get(product=product)
             if item.user != request.user:
                 result.set_error('remove', result.get_message('unauthorised'))
                 return Response(data, status.HTTP_401_UNAUTHORIZED)

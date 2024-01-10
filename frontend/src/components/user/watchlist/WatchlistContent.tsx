@@ -23,12 +23,12 @@ export default function WatchlistContent({
             .catch(errors => console.log(errors))
         }
     }, [status])
+    
     return (
         (status === "authenticated") &&
         <ProductGrid
-            authenticated={true}
+            backendUrl={backendUrl}
             items={items}
-            watchlist={items}
         />
     )
 }
