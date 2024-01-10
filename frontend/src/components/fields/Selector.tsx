@@ -16,7 +16,7 @@ export default function Selector({
     onChange: (data: any) => void
 }) {
     return (
-        <div className={`pl-1.5 gray-border rounded ${className}`}>
+        <div className={`gray-border rounded ${className}`}>
             <Select
                 isSearchable
                 options={options}
@@ -30,6 +30,13 @@ export default function Selector({
                             borderRadius: 6,
                             boxShadow: "none",
                             minHeight: 42,
+                            paddingLeft: 6,
+                        })
+                        return base;
+                    },
+                    option: (base) => {
+                        Object.assign(base, {
+                            paddingLeft: 16,
                         })
                         return base;
                     }

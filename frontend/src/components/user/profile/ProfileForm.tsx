@@ -10,12 +10,8 @@ import Error from "@/components/fields/Error";
 import Loader from "@/components/navigation/Loader";
 import Field from "@/components/fields/Field";
 
-export default function ProfileForm({
-    backendUrl=""
-}: {
-    backendUrl: string | undefined
-}) {
-    const {data, status}: any = useSession();
+export default function ProfileForm() {
+    const {status}: any = useSession();
     const [username, setUsername] = useState("");
     const [first, setFirst] = useState("");
     const [last, setLast] = useState("");
@@ -27,10 +23,8 @@ export default function ProfileForm({
     const router = useRouter();
 
     async function getProfile() {
-        const {access} = data;
         const {data: {username, first_name, last_name, email, mobile_number, date_joined}} = await axios.get(
-            `${backendUrl}/api/users/profile/`,
-            {headers: {Authorization: `Bearer ${access}`}}
+            "/api/user/profile"
         ).then(({data}) => data)
         
         setUsername(username);
@@ -44,15 +38,13 @@ export default function ProfileForm({
     async function updateProfile() {
         setUpdating("progress");
         setErrors({});
-        const {access} = data;
         await axios.post(
-            `${backendUrl}/api/users/profile/`,
+            "/api/user/profile",
             {
                 first_name: first,
                 last_name: last,
                 mobile_number: mobile
             },
-            {headers: {Authorization: `Bearer ${access}`}}
         ).then(() => setUpdating("success"))
         .catch(({response: {data: {data: {errors}}}}) => {
             setErrors(errors);

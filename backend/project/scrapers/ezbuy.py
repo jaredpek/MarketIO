@@ -60,6 +60,7 @@ class EzBuy(Scraper):
             try:
                 data = {}
                 data['id'] = f'{EzBuy.key}_{product.get("gpid")}'
+                data['key'] = data['id']
                 data['title'] = product.get('name')
                 data['url'] = f'{self.url}/product/{product.get("gpid")}.html'
                 data['image'] = product.get('img')

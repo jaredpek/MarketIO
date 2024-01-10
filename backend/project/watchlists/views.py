@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
 
 from project.response import Response as Result
-from django.db.utils import IntegrityError
+from products.models import Product
 from watchlists.models import WatchlistItem
 from watchlists.serializers import WatchlistItemViewSerializer, WatchlistItemAddSerializer
 
@@ -32,28 +32,31 @@ class WatchlistView(APIView):
         request.data.update({'user': request.user.id})
         serializer = WatchlistItemAddSerializer(data=request.data)
         if not serializer.is_valid():
-            result.set_error('product', result.get_message('does_not_exist'))
+            for error in serializer.errors:
+                result.set_error(error, serializer.errors[error][0])
             return Response(data, status.HTTP_400_BAD_REQUEST)
         
         try:
             serializer.create(request.data)
-            result.set_message('create', result.get_message('success'))
+            result.set_message('add', result.get_message('success'))
             return Response(data, status.HTTP_200_OK)
-        
-        except IntegrityError:
-            result.set_error('create', result.get_message('exists'))
-            return Response(data, status.HTTP_400_BAD_REQUEST)
-        
         except Exception:
-            result.set_error('create', result.get_message('error'))
+            result.set_error('add', result.get_message('exists'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
+
   
     def delete(self, request, *args, **kwargs):
         result = Result()
         data = result.result
 
         try:
-            item = WatchlistItem.objects.get(pk=request.GET.get('id'))
+            product = Product.objects.get(key=request.GET.get('key'))
+        except Exception:
+            result.set_error('product', result.get_message('does_not_exist'))
+            return Response(data, status.HTTP_400_BAD_REQUEST)
+
+        try:
+            item = WatchlistItem.objects.get(product=product)
             if item.user != request.user:
                 result.set_error('remove', result.get_message('unauthorised'))
                 return Response(data, status.HTTP_401_UNAUTHORIZED)

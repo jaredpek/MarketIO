@@ -62,11 +62,12 @@ export default function SearchFilters({
     }
 
     return (
-        <div className={`flex flex-col gap-2 ${className}`}>
+        <div className={`flex flex-col gap-2 z-40 ${className}`}>
             <div className="flex max-[560px]:flex-wrap max-[560px]:gap-2 gap-6">
                 <SortFilter
                     value={sort}
                     onChange={data => setSort(data)}
+                    className="z-30"
                 />
                 <PriceFilter
                     minPriceValue={minPrice}
@@ -79,6 +80,7 @@ export default function SearchFilters({
                 <PlatformFilter
                     value={scrapers}
                     onChange={data => setScrapers(data)}
+                    className="z-20"
                 />
                 <div className={`rounded button submit px-4 md:w-[80px] ${loading ? "loading" : ""}`} title='Apply Filters' onClick={applyFilters}>Apply</div>
             </div>

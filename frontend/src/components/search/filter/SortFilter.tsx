@@ -8,13 +8,14 @@ export const sortOptions = [
 ]
 
 export default function SortFilter({
-    value, onChange
+    value, onChange, className=""
 }: {
     value: Option,
-    onChange: (data: Option) => void
+    onChange: (data: Option) => void,
+    className?: string
 }) {
     return (
-        <FilterOption title="Sort By">
+        <FilterOption title="Sort By" className={className}>
             <Selector
                 className="w-full"
                 options={sortOptions}

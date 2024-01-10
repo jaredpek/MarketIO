@@ -10,13 +10,14 @@ export const scraperOptions = [
 ]
 
 export default function ScraperFilter({
-    value, onChange
+    value, onChange, className=""
 }: {
     value: Option[],
-    onChange: (data: Option[]) => void
+    onChange: (data: Option[]) => void,
+    className?: string
 }) {
     return (
-        <FilterOption title="Platform">
+        <FilterOption title="Platform" className={className}>
             <Selector
                 className="w-full"
                 isMulti={true}

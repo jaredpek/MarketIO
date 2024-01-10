@@ -6,9 +6,9 @@ import Loader from "@/components/navigation/Loader";
 import Error from "@/components/fields/Error";
 
 export default function ProductAnalytics({
-    className="",
+    className=""
 }: {
-    className?: string
+    className?: string,
 }) {
     const [analytics, setAnalytics] = useState <Analytics | null> (null);
     const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ export default function ProductAnalytics({
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`http://127.0.0.1:8000/api/analytics/?search=${params.get("search") || ""}`)
+        axios.get(`/api/analytics/?search=${params.get("search") || ""}`)
             .then(({data}) => setAnalytics(data.data.analytics))
             .catch((errors) => console.log(errors))
             .finally(() => setLoading(false));

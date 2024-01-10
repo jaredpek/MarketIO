@@ -8,7 +8,7 @@ import TriggerButton from "./TriggerButton";
 export default function SearchSection({
     loading
 }: {
-    loading: boolean
+    loading: boolean,
 }) {
     const [filterHidden, setFilterHidden] = useState(true);
     const [analyticsHidden, setAnalyticsHidden] = useState(true);
