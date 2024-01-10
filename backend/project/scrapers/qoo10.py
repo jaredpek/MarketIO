@@ -54,6 +54,7 @@ class Qoo10(Scraper):
                 data['title'] = title_section.get('title')
                 data['url'] = title_section.get('href')
                 data['id'] = f'{Qoo10.key}_{data["url"].split("/")[-1]}'
+                data['key'] = data['id']
                 data['image'] = title_section.find('img').get('gd_src')
                 price = product.find('strong', {'title': 'Discounted Price'}).text
                 data['currency'] = price[:2]

@@ -4,7 +4,7 @@ import SearchContent from "@/components/search/SearchContent";
 export default function Page() {
     return (
         <Layout>
-            <SearchContent />
+            <SearchContent backendUrl={process.env.NEXTAUTH_BACKEND_URL || ""} />
         </Layout>
     )
 }

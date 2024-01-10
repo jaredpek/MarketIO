@@ -42,6 +42,7 @@ class AliExpress(Scraper):
             try:
                 data = {}
                 data['id'] = f'{AliExpress.key}_{product["productId"]}'
+                data['key'] = data['id']
                 data['title'] = product['title']['seoTitle']
                 data['url'] = f'{AliExpress.url}/item/{product["productId"]}.html'
                 data['image'] = f'https:{product["image"]["imgUrl"]}'

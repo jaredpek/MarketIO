@@ -32,21 +32,18 @@ class WatchlistView(APIView):
         request.data.update({'user': request.user.id})
         serializer = WatchlistItemAddSerializer(data=request.data)
         if not serializer.is_valid():
-            result.set_error('product', result.get_message('does_not_exist'))
+            for error in serializer.errors:
+                result.set_error(error, serializer.errors[error][0])
             return Response(data, status.HTTP_400_BAD_REQUEST)
         
         try:
             serializer.create(request.data)
-            result.set_message('create', result.get_message('success'))
+            result.set_message('watchlist add', result.get_message('success'))
             return Response(data, status.HTTP_200_OK)
-        
-        except IntegrityError:
-            result.set_error('create', result.get_message('exists'))
-            return Response(data, status.HTTP_400_BAD_REQUEST)
-        
         except Exception:
-            result.set_error('create', result.get_message('error'))
+            result.set_error('watchlist add', result.get_message('exists'))
             return Response(data, status.HTTP_400_BAD_REQUEST)
+
   
     def delete(self, request, *args, **kwargs):
         result = Result()

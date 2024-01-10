@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+hr{
+    @apply border-none h-[1px] bg-gray-300 rounded-xl;
+}
+
 .gray {
     @apply text-gray-500 hover:text-gray-400;
 }

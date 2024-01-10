@@ -20,20 +20,6 @@ class ProductView(APIView):
 
         return Response(data, status.HTTP_200_OK)
     
-    def post(self, request, *args, **kwargs):
-        result = Result()
-        data = result.result
-
-        serializer = ProductSerializer(data=request.data)
-        if not serializer.is_valid():
-            for field in serializer.errors:
-                result.set_error(field, serializer.errors[field], many=True)
-            return Response(data, status.HTTP_400_BAD_REQUEST)
-        
-        serializer.create(request.data)
-        result.set_message('create', result.get_message('success'))
-        return Response(data, status.HTTP_200_OK)
-    
     def delete(self, request):
         result = Result()
         data = result.result

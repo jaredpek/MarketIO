@@ -42,6 +42,7 @@ class Lazada(Scraper):
             try:
                 data = {}
                 data['id'] = f'{Lazada.key}_{product.get("itemId")}'
+                data['key'] = data['id']
                 data['title'] = product.get('name')
                 data['url'] = f'https://{product.get("itemUrl")[2:]}'
                 data['image'] = product.get('image')
