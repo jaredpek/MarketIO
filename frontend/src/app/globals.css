@@ -30,8 +30,20 @@
     @apply bg-blue-500 hover:bg-blue-400 text-white border-none;
 }
 
+.loading{
+    @apply !cursor-not-allowed !bg-blue-400;
+}
+
 .google{
     @apply bg-red-500 hover:bg-red-400 text-white;
+}
+
+.error{
+    @apply text-red-500;
+}
+
+.error-border{
+    @apply !border-red-500;
 }
 
 .overlay{

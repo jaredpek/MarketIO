@@ -1,5 +1,7 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 
+export type action = "none" | "progress" | "success" | "error";
+
 export function getKey() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     const length = 32;
@@ -14,7 +16,12 @@ export function getKey() {
 }
 
 export function getRedirect(path: string, params: ReadonlyURLSearchParams) {
+    if (path === "/") return "";
     if (path.includes("login") || path.includes("register")) return `${params.toString()}`;
     const paramStr = params.toString();
     return `redirect=${path}${paramStr ? "?" + paramStr : ""}`
+}
+
+export function convertDate(dateTimeStr: string) {
+    return dateTimeStr.split("T")[0] || "";
 }
