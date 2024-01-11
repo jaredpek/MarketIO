@@ -1,11 +1,17 @@
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "PYF6LbTtyaRSMNXxYsjZIGgvNCLFjVv71jtPjaXYXhuhlSFJ4j3Wunzfjq9khLlN"
+load_dotenv(f"{BASE_DIR.parent.parent}/.env")
 
-DEBUG = True
+getValue = lambda key: os.environ.get(key)
+
+SECRET_KEY = getValue("DJANGO_SECRET_KEY")
+
+DEBUG = bool(getValue("DJANGO_DEBUG"))
 
 SITE_ID = 1
 
@@ -48,8 +54,8 @@ INSTALLED_APPS = [
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": "541466706815-1ankejcd3qh8v9dcarjf97054hoie1e8.apps.googleusercontent.com",
-            "secret": "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",
+            "client_id": getValue("GOOGLE_CLIENT_ID"),
+            "secret": getValue("GOOGLE_CLIENT_SECRET"),
             "key": "",
         },
         "SCOPE": [
@@ -63,7 +69,7 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
-LIFETIME = 14
+LIFETIME = int(getValue("DJANGO_JWT_LIFETIME"))
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=LIFETIME),
@@ -71,8 +77,8 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": "YFgDEzmrLi3XcCgephBkR8Vf4WoTKjvN5jJwBh6txxJW8j7Sjwx5YSMNZNeeM4FD", 
-    "ALGORITHM": "HS512",
+    "SIGNING_KEY": getValue("DJANGO_JWT_SIGNING_KEY"), 
+    "ALGORITHM": getValue("DJANGO_JWT_ALGORITHM"),
 }
 
 REST_FRAMEWORK = {
@@ -155,6 +161,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
+if getValue("ENVIRONMENT") == "PRODUCTION":
+    STATIC_URL = getValue("DJANGO_STATIC_URL")
+else:
+    STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

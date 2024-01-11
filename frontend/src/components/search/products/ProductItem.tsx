@@ -4,6 +4,7 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useState } from "react";
+import ProductImage from "./ProductImage";
 
 export interface Product {
     id: string,
@@ -58,7 +59,7 @@ export default function ProductItem({
         <div id={key} className="cursor-pointer p-3 rounded-md h-[350px] relative hover:shadow-lg">
             <Link target="_blank" href={url} title={title}>
                 <div className="mb-2 w-full h-[50%] flex items-center justify-center">
-                    <img src={image} className="h-full w-fit" alt="No Product Image" />
+                    <ProductImage image={image} />
                 </div>
                 <div className="line-clamp-2 mb-2">{title}</div>
                 <div className="mb-2">

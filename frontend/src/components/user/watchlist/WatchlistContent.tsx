@@ -27,7 +27,7 @@ export default function WatchlistContent() {
         <Loader /> :
         <ProductGrid
             products={products}
-            watchlist={products.slice(0)}
+            watchlist={products.map(product => product.key)}
         />
     )
 }

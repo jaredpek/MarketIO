@@ -3,8 +3,8 @@ import ProductGrid from "./ProductGrid";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import Loader from "@/components/navigation/Loader";
-import Error from "@/components/fields/Error";
 import { useSession } from "next-auth/react";
+import { Product } from "./ProductItem";
 
 export default function ProductSearch({
     loading, setLoading, className=""
@@ -15,14 +15,13 @@ export default function ProductSearch({
 }) {
     const params = useSearchParams();
     const {status} = useSession();
-    const [watchlist, setWatchlist] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [watchlist, setWatchlist] = useState([] as string[]);
+    const [products, setProducts] = useState([] as Product[]);
 
     useEffect(() => {
         if (status === "authenticated") {
-            axios.get(
-                "/api/user/watchlist",
-            ).then(({data: {data: {items}}}) => setWatchlist(items))
+            axios.get("/api/user/watchlist")
+            .then(({data: {data: {items}}}: {data: {data: {items: Product[]}}}) => setWatchlist(items.map((item) => item.key)))
             .catch(errors => console.log(errors))
         }
     }, [status])
@@ -30,18 +29,14 @@ export default function ProductSearch({
     useEffect(() => {
         setLoading(true);
         axios.get(`/api/search?${params.toString()}`)
-        .then(({data}) => {
-            const products = data.data.products || [];
-            setProducts(products);
-        }).catch((errors) => console.log(errors))
+        .then(({data: {data: {products}}}) => setProducts(products))
+        .catch(errors => console.log(errors))
         .finally(() => setLoading(false))
     }, [params])
 
     return (
         loading ?
         <Loader message="Searching Products..." /> :
-        !products.length ?
-        <Error message="No Products Found" /> :
         <ProductGrid
             className={className}
             products={products} 

@@ -15,7 +15,7 @@ export default function Input({
     return (
         <input
             type={type}
-            className={`rounded px-4 py-[9px] select-none ${disabled ? "bg-gray-200" : ""} ${className}`}
+            className={`rounded px-4 py-[9px] ${disabled ? "bg-gray-200" : ""} ${className}`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
