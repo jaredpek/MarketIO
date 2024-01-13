@@ -161,9 +161,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-if getValue("ENVIRONMENT") == "PRODUCTION":
-    STATIC_URL = getValue("DJANGO_STATIC_URL")
-else:
-    STATIC_URL = "static/"
+STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

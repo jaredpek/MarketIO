@@ -20,6 +20,7 @@ export default function ProfileForm() {
     const [dateJoined, setDateJoined] = useState("");
     const [updating, setUpdating] = useState("none" as action);
     const [errors, setErrors] = useState(Object);
+    const [loaded, setLoaded] = useState(false);
     const router = useRouter();
 
     async function getProfile() {
@@ -57,11 +58,12 @@ export default function ProfileForm() {
         if (status === "unauthenticated") {
             router.push("/user/auth/login"); return;
         }
-        getProfile();
+        getProfile().finally(() => setLoaded(true));
     }, [status])
 
     return (
-        (status === "authenticated") ?
+        (!loaded) || (status !== "authenticated") ?
+        <Loader /> :
         <div className="max-w-[1000px] m-auto">
             <div
                 className="grid w-full gap-2 sm:grid-cols-2 mb-4"
@@ -116,12 +118,11 @@ export default function ProfileForm() {
                 }
             </div>
             <div
-                className={`rounded button submit ${(updating === "progress") ? "cursor-not-allowed" : ""}`}
+                className={`rounded button submit ${(updating === "progress") ? "loading" : ""}`}
                 onClick={updateProfile}
             >
                 Update
             </div>
-        </div> :
-        <Loader />
+        </div>
     )
 }
