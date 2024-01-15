@@ -11,11 +11,11 @@ export default function ProductImage({
         const img = new Image();
         img.src = image;
         img.onload = () => {
-            ((img.width / img.height) > (208 / 162)) ?
+            (img.width > img.height) ?
             setStretch("w-full") :
             setStretch("h-full")
         }
     }, [])
 
-    return <img src={image} className={stretch} alt="Product image not found" />
+    return <img src={image} className={`${stretch} max-h-full`} alt="Product image not found" />
 }
