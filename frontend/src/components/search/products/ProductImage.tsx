@@ -11,7 +11,7 @@ export default function ProductImage({
         const img = new Image();
         img.src = image;
         img.onload = () => {
-            (img.width > img.height) ?
+            ((img.width / img.height) > (208 / 162)) ?
             setStretch("w-full") :
             setStretch("h-full")
         }
