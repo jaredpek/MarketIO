@@ -65,6 +65,7 @@ class Amazon(Scraper):
         for i in range(page, page + pages):
             params['page'] = i
             response = requests.get(f'{self.url}/s', params=params, headers=get_headers(self.url))
+            print(f'Amazon (Page {page}) {response}')
             results['products'].extend(self.extract(response))
         
         results['last_searched'] = response.url

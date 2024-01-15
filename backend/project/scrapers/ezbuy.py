@@ -85,6 +85,7 @@ class EzBuy(Scraper):
         results = {'products': []}
         for _ in range(page, page + pages):
             response = requests.post('https://sg-en-web-api.ezbuy.sg/api/spk.App/Search', json=params, headers=get_headers(self.url))
+            print(f'EzBuy (Page {page}) {response}')
             results['products'].extend(self.extract(response))
             params['offset'] += self.limit
         
