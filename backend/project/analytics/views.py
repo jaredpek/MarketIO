@@ -12,7 +12,7 @@ class Analytics(APIView):
         params = {
             'search': request.GET.get('search'),
             'scrapers': request.GET.get('scrapers'),
-            'pages': 3,
+            'pages': 2,
         }
         products_response = General().products(params)
         if products_response['status'] != 'success':
