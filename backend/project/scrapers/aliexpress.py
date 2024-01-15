@@ -68,7 +68,7 @@ class AliExpress(Scraper):
         results = {'products': []}
         for i in range(page, page + pages):
             params['page'] = i
-            for _ in range(5):
+            for _ in range(2):
                 try:
                     response = requests.get(f'{self.url}/w/wholesale-{params["SearchText"]}.html', params=params, headers=get_headers(self.url))
                     results['products'].extend(self.extract(response))
