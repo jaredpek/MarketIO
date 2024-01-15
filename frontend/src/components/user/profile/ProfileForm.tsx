@@ -9,6 +9,7 @@ import Success from "@/components/fields/Success";
 import Error from "@/components/fields/Error";
 import Loader from "@/components/navigation/Loader";
 import Field from "@/components/fields/Field";
+import Submit from "@/components/fields/Submit";
 
 export default function ProfileForm() {
     const {status}: any = useSession();
@@ -117,12 +118,10 @@ export default function ProfileForm() {
                     <></>
                 }
             </div>
-            <div
-                className={`rounded button submit ${(updating === "progress") ? "loading" : ""}`}
+            <Submit 
+                loading={updating === "progress"}
                 onClick={updateProfile}
-            >
-                Update
-            </div>
+            />
         </div>
     )
 }

@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import Error from "@/components/fields/Error";
 import Field from "@/components/fields/Field";
+import Submit from "@/components/fields/Submit";
 
 export default function CredentialLogin({
     className=""
@@ -55,12 +56,10 @@ export default function CredentialLogin({
                 !!(params.get("error") === "CredentialsSignin") &&
                 <Error className="mb-4" message="Invalid username or password" />
             }
-            <div
-                className={`rounded button submit ${loading ? "loading" : ""}`}
+            <Submit
+                loading={loading}
                 onClick={login}
-            >
-                Login
-            </div>
+            />
         </div>
     )
 }

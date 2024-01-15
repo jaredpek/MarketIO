@@ -23,7 +23,7 @@ hr{
 }
 
 .trigger{
-    @apply flex items-center justify-center cursor-pointer select-none;
+    @apply flex items-center justify-center cursor-pointer select-none gap-2;
 }
 
 .button{
