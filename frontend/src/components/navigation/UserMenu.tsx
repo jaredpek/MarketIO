@@ -20,12 +20,18 @@ function MenuLink({
 }
 
 export default function UserMenu({
-    hidden
+    hidden, onMouseEnter, onMouseLeave
 }: {
     hidden: boolean,
+    onMouseEnter: MouseEventHandler,
+    onMouseLeave: MouseEventHandler
 }) {
     return (
-        <div className={`absolute right-5 py-2 bg-white rounded ${hidden ? "hidden" : ""}`} >
+        <div
+            className={`absolute right-5 py-2 bg-white rounded ${hidden ? "hidden" : ""}`}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <MenuLink title="Profile" href="/user/profile">
                 <RiProfileLine size={18} />
             </MenuLink>

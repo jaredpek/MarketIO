@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { action } from "@/lib/util";
 import Field from "@/components/fields/Field";
+import Submit from "@/components/fields/Submit";
 
 export default function CredentialRegister({
     className=""
@@ -85,12 +86,10 @@ export default function CredentialRegister({
                     />
                 </Field>
             </div>
-            <div
-                className={`rounded button submit ${(state === "progress") ? "loading" : ""}`}
+            <Submit
+                loading={state === "progress"}
                 onClick={register}
-            >
-                Register
-            </div>
+            />
         </div>
     )
 }

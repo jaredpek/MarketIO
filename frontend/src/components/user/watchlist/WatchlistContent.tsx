@@ -11,12 +11,16 @@ export default function WatchlistContent() {
     const {status} = useSession();
     const [loaded, setLoaded] = useState(false);
     const [products, setProducts] = useState([] as Product[]);
+    const [watchlist, setWatchlist] = useState([] as string[]);
 
     useEffect(() => {
         if (status === "authenticated") {
             axios.get(
                 "/api/user/watchlist",
-            ).then(({data: {data: {items}}}) => setProducts(items))
+            ).then(({data: {data: {items}}}) => {
+                setProducts(items as Product[]);
+                setWatchlist(items.map((item: Product) => item.key));
+            })
             .catch(errors => console.log(errors))
             .finally(() => setLoaded(true))
         }
@@ -27,7 +31,7 @@ export default function WatchlistContent() {
         <Loader /> :
         <ProductGrid
             products={products}
-            watchlist={products.map(product => product.key)}
+            watchlist={watchlist}
         />
     )
 }

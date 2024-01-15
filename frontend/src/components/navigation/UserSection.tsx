@@ -22,9 +22,14 @@ export default function UserSection() {
                 <>
                     <BiUserCircle 
                         className="navbar-icon text-[35px] md:text-[45px]" 
-                        onClick={() => setHidden(!hidden)}
+                        onMouseEnter={() => setHidden(false)}
+                        onMouseLeave={() => setHidden(true)}
                     />
-                    <UserMenu hidden={hidden} />
+                    <UserMenu
+                        hidden={hidden}
+                        onMouseEnter={() => setHidden(false)}
+                        onMouseLeave={() => setHidden(true)}
+                    />
                 </> :
                 <NavLink title="Login" href={`/user/auth/login?${getRedirect(path, params)}`} className="rounded text-sm py-2.5 px-3 md:text-base md:px-4 md:py-3 border-none submit !text-white" />
             }
