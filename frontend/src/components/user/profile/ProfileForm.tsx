@@ -1,41 +1,30 @@
 "use client"
 
-import { action, convertDate } from "@/lib/util";
+import { action } from "@/lib/util";
 import axios from "axios";
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Success from "@/components/fields/Success";
 import Error from "@/components/fields/Error";
-import Loader from "@/components/navigation/Loader";
 import Field from "@/components/fields/Field";
 import Submit from "@/components/fields/Submit";
 
-export default function ProfileForm() {
-    const {status}: any = useSession();
-    const [username, setUsername] = useState("");
-    const [first, setFirst] = useState("");
-    const [last, setLast] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [dateJoined, setDateJoined] = useState("");
+export default function ProfileForm({
+    profile
+}: {
+    profile: {
+        username?: string, 
+        first_name?: string, 
+        last_name?: string, 
+        email?: string, 
+        mobile_number?: string, 
+        date_joined?: string
+    }
+}) {
+    const [first, setFirst] = useState(profile.first_name);
+    const [last, setLast] = useState(profile.last_name);
+    const [mobile, setMobile] = useState(profile.mobile_number);
     const [updating, setUpdating] = useState("none" as action);
     const [errors, setErrors] = useState(Object);
-    const [loaded, setLoaded] = useState(false);
-    const router = useRouter();
-
-    async function getProfile() {
-        const {data: {username, first_name, last_name, email, mobile_number, date_joined}} = await axios.get(
-            "/api/user/profile"
-        ).then(({data}) => data)
-        
-        setUsername(username);
-        setFirst(first_name);
-        setLast(last_name);
-        setEmail(email);
-        setMobile(mobile_number);
-        setDateJoined(convertDate(date_joined));
-    }
 
     async function updateProfile() {
         setUpdating("progress");
@@ -54,18 +43,8 @@ export default function ProfileForm() {
         })
     }
 
-    useEffect(() => {
-        if (status === "loading") return;
-        if (status === "unauthenticated") {
-            router.push("/user/auth/login"); return;
-        }
-        getProfile().finally(() => setLoaded(true));
-    }, [status])
-
     return (
-        (!loaded) || (status !== "authenticated") ?
-        <Loader /> :
-        <div className="max-w-[1000px] m-auto">
+        <div className="w-full">
             <div
                 className="grid w-full gap-2 sm:grid-cols-2 mb-4"
                 onKeyDown={e => {
@@ -74,12 +53,12 @@ export default function ProfileForm() {
             >
                 <Field
                     title="Username"
-                    value={username}
+                    value={profile.username}
                     disabled={true}
                 />
                 <Field
                     title="Member Since"
-                    value={dateJoined}
+                    value={profile.date_joined}
                     disabled={true}
                     type="date"
                 />
@@ -98,8 +77,7 @@ export default function ProfileForm() {
                 <Field
                     title="Email"
                     type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    value={profile.email}
                     disabled={true}
                 />
                 <Field
@@ -121,6 +99,7 @@ export default function ProfileForm() {
             <Submit 
                 loading={updating === "progress"}
                 onClick={updateProfile}
+                title="Update"
             />
         </div>
     )

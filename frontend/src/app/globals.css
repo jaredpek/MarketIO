@@ -27,7 +27,7 @@ hr{
 }
 
 .button{
-    @apply trigger h-[44px] border-none shrink-0 px-4;
+    @apply trigger min-h-[44px] py-2 border-none shrink-0 px-4;
 }
 
 .submit{

@@ -2,8 +2,9 @@ import { MouseEventHandler } from "react";
 import { ClipLoader } from "react-spinners";
 
 export default function Submit({
-    className="", loading=false, onClick
+    title="Submit", className="", loading=false, onClick
 }: {
+    title?: string,
     className?: string,
     loading?: boolean,
     onClick: MouseEventHandler
@@ -13,7 +14,7 @@ export default function Submit({
             className={`rounded button submit ${className} ${loading ? "loading" : ""}`}
             onClick={onClick}
         >
-            Update
+            {title}
             <ClipLoader
                 size={15}
                 color="#ffffff"

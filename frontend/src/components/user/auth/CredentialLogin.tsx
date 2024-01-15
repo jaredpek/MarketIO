@@ -59,6 +59,7 @@ export default function CredentialLogin({
             <Submit
                 loading={loading}
                 onClick={login}
+                title="Login"
             />
         </div>
     )

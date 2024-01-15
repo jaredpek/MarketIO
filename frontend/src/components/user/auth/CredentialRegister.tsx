@@ -89,6 +89,7 @@ export default function CredentialRegister({
             <Submit
                 loading={state === "progress"}
                 onClick={register}
+                title="Register"
             />
         </div>
     )

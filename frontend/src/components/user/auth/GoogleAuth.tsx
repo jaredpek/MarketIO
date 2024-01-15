@@ -22,6 +22,10 @@ export default function GoogleAuth() {
                 !!(params.get("error") === "OAuthCallback") &&
                 <Error className="mt-4" message="Invalid social login" />
             }
+            {
+                !!(params.get("error") === "AccessDenied") &&
+                <Error className="mt-4" message="Account not linked to this email" />
+            }
         </>
     )
 }
