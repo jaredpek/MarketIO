@@ -3,7 +3,7 @@ import ProductRating from "./ProductRating";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import ProductImage from "./ProductImage";
 
 export interface Product {
@@ -20,11 +20,10 @@ export interface Product {
 }
 
 export default function ProductItem({
-    item, watchlist, setWatchlist
+    item, watchlist
 }: {
     item: Product,
     watchlist: string[],
-    setWatchlist: Dispatch<SetStateAction<string[]>>
 }) {
     const {key, title, url, image, currency, price, rating, rating_qty, platform} = item;
     const {status} = useSession();
@@ -36,10 +35,7 @@ export default function ProductItem({
             await axios.post(
                 "/api/user/watchlist",
                 {key, title, url, image, currency, price, rating, rating_qty, platform},
-            ).then(() => {
-                watchlist.push(key);
-                setWatchlist(watchlist.slice(0));
-            });
+            ).then(() => watchlist.push(key))
         }
     }
 
@@ -47,11 +43,7 @@ export default function ProductItem({
         if (status === "authenticated") {
             setAdded(false);
             await axios.delete(`/api/user/watchlist/?key=${key}`)
-            .then(() => {
-                const index = watchlist.indexOf(key);
-                watchlist.splice(index, 1);
-                setWatchlist(watchlist.slice(0));
-            });
+            .then(() => watchlist.splice(watchlist.indexOf(key), 1))
         }
     }
 
