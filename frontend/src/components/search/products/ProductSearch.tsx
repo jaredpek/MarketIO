@@ -5,6 +5,7 @@ import axios from "axios";
 import Loader from "@/components/navigation/Loader";
 import { useSession } from "next-auth/react";
 import { Product } from "./ProductItem";
+import Submit from "@/components/fields/Submit";
 
 export default function ProductSearch({
     loading, setLoading, className=""
@@ -15,8 +16,10 @@ export default function ProductSearch({
 }) {
     const params = useSearchParams();
     const {status} = useSession();
+    const [page, setPage] = useState(1);
     const [watchlist, setWatchlist] = useState([] as string[]);
     const [products, setProducts] = useState([] as Product[]);
+    const [extending, setExtending] = useState(false);
 
     useEffect(() => {
         if (status === "authenticated") {
@@ -28,19 +31,37 @@ export default function ProductSearch({
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`/api/search?${params.toString()}`)
+        setPage(page + 1);
+        axios.get(`/api/search?page=${page}&${params.toString()}`)
         .then(({data: {data: {products}}}) => setProducts(products))
         .catch(errors => console.log(errors))
         .finally(() => setLoading(false))
     }, [params])
 
+    function extendProducts() {
+        setExtending(true);
+        setPage(page + 1);
+        axios.get(`/api/search?page=${page}&${params.toString()}`)
+        .then(({data: {data: {products: newProducts}}}) => setProducts([...products, ...newProducts]))
+        .catch(errors => console.log(errors))
+        .finally(() => setExtending(false))
+    }
+
     return (
         loading ?
         <Loader message="Searching Products..." /> :
-        <ProductGrid
-            className={className}
-            products={products} 
-            watchlist={watchlist}
-        />
+        <>
+            <ProductGrid
+                className={`mb-6 ${className}`}
+                products={products} 
+                watchlist={watchlist}
+            />
+            <Submit
+                className="max-w-[600px] m-auto"
+                title="More Products"
+                loading={extending}
+                onClick={extendProducts}
+            />
+        </>
     )
 }
