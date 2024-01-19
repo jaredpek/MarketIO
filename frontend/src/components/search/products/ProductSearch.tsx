@@ -52,12 +52,12 @@ export default function ProductSearch({
         <Loader message="Searching Products..." /> :
         <>
             <ProductGrid
-                className={`mb-6 ${className}`}
+                className={className}
                 products={products} 
                 watchlist={watchlist}
             />
             <Submit
-                className="max-w-[600px] m-auto"
+                className="max-w-[600px] mx-auto mt-6"
                 title="More Products"
                 loading={extending}
                 onClick={extendProducts}
