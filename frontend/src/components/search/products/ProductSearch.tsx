@@ -31,8 +31,8 @@ export default function ProductSearch({
 
     useEffect(() => {
         setLoading(true);
-        setPage(page + 1);
-        axios.get(`/api/search?page=${page}&${params.toString()}`)
+        setPage(1);
+        axios.get(`/api/search?${params.toString()}`)
         .then(({data: {data: {products}}}) => setProducts(products))
         .catch(errors => console.log(errors))
         .finally(() => setLoading(false))
