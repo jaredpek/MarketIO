@@ -71,7 +71,7 @@ class AliExpress(Scraper):
             for _ in range(2):
                 try:
                     response = requests.get(f'{self.url}/w/wholesale-{params["SearchText"]}.html', params=params, headers=get_headers(self.url))
-                    print(f'Aliexpress (Page {page}) {response}')
+                    print(f'Aliexpress (Page {i}) {response}')
                     results['products'].extend(self.extract(response))
                     break
                 except:

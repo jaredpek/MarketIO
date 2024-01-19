@@ -79,7 +79,7 @@ class Qoo10(Scraper):
         for i in range(page, page + pages):
             params['p'] = i
             response = requests.post(f'{self.url}/gmkt.inc/Search/DefaultAjaxAppend.aspx', params=params, headers=get_headers(self.url))
-            print(f'Qoo10 (Page {page}) {response}')
+            print(f'Qoo10 (Page {i}) {response}')
             results['products'].extend(self.extract(response))
         
         results['last_searched'] = response.url
