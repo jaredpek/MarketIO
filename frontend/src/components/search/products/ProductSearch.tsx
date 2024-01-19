@@ -40,11 +40,13 @@ export default function ProductSearch({
 
     function extendProducts() {
         setExtending(true);
-        setPage(page + 1);
-        axios.get(`/api/search?page=${page}&${params.toString()}`)
+        axios.get(`/api/search?page=${page + 1}&${params.toString()}`)
         .then(({data: {data: {products: newProducts}}}) => setProducts([...products, ...newProducts]))
         .catch(errors => console.log(errors))
-        .finally(() => setExtending(false))
+        .finally(() => {
+            setExtending(false);
+            setPage(page + 1);
+        })
     }
 
     return (
