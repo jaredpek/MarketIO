@@ -12,16 +12,16 @@ MarketIO is an e-commerce product comparison platform that scrapes products in r
 1. Clone this project using git clone: ````git clone https://github.com/jaredpek/Technical-Analysis-Signal-Classification````
 2. Add a .env file in the root folder of this project with the following variables:
 ````
-DJANGO_SECRET_KEY = "any randomly generated string with 64 alphanumeric characters"
-DJANGO_JWT_SIGNING_KEY = "any randomly generated string with 64 alphanumeric characters"
+DJANGO_SECRET_KEY = "<any randomly generated string with 64 alphanumeric characters>"
+DJANGO_JWT_SIGNING_KEY = "<any randomly generated string with 64 alphanumeric characters>"
 DJANGO_JWT_ALGORITHM = HS512
 DJANGO_JWT_LIFETIME = 14
 DJANGO_BACKEND_URL = http://127.0.0.1:8000    ## change this to your backend production url upon deployment
 DJANGO_DEBUG = True
-GOOGLE_CLIENT_ID = "your google project's client id"
-GOOGLE_CLIENT_SECRET = "your google project's client secret"
+GOOGLE_CLIENT_ID = "<your google project's client id>"
+GOOGLE_CLIENT_SECRET = "<your google project's client secret>"
 NEXTAUTH_URL = http://127.0.0.1:3000  ## change this to your frontend production url upon deployment
-NEXTAUTH_SECRET = "any randomly generated string with 64 alphanumeric characters"
+NEXTAUTH_SECRET = "<any randomly generated string with 64 alphanumeric characters>"
 NEXTAUTH_BACKEND_URL = http://127.0.0.1:8000    ## should be same as DJANGO_BACKEND_URL
 NEXTAUTH_PUBLIC_BACKEND_URL = http://127.0.0.1:8000    ## should be same as DJANGO_BACKEND_URL
 ````
@@ -34,9 +34,10 @@ NEXTAUTH_PUBLIC_BACKEND_URL = http://127.0.0.1:8000    ## should be same as DJAN
         - Generate a python virtual environment: ````python -m venv venv````
         - Activate the python virtual environment: ````venv/Scripts/activate````
         - Install all backend dependencies: ````pip install -r packages.txt````
-    - Admin User
-        - Navigate to the Django project directory: ````cd backend/project````
-        - Create a new super user: ````python manage.py createsuperuser````, following the prompts provided
+        - Navigate to the project directory: ````cd project````
+        - Generate project migration files: ````python manage.py makemigrations analytics products profiles scrapers search watchlists````
+        - Migrate the project: ````python manage.py migrate````
+        - Create a new super user: ````python manage.py createsuperuser````, follow the prompts provided
 
 ## Running the Project
 1. Build the static files for the Next.js frontend
