@@ -109,10 +109,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http:\/\/127\.0\.0\.1.*$",
-    r"^http:\/\/localhost.*$",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "project.urls"
 
